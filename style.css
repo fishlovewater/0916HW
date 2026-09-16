@@ -2414,3 +2414,366 @@ body.theme-night .medal-badge {
     padding: 12px 8px;
   }
 }
+
+/* ==========================================================================
+   👤🛠🚀 Personal Page 區塊 (Profile / Skills / Projects)
+   ========================================================================== */
+
+/* 共用區塊標題 */
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.section-heading-icon {
+  font-size: 1.6rem;
+  animation: gentleBob 2.4s ease-in-out infinite alternate;
+}
+
+.section-heading-title {
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--text-main);
+  letter-spacing: 0.5px;
+}
+
+/* -------------------- Profile 個人介紹 -------------------- */
+.profile-body {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  text-align: left;
+}
+
+.profile-avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.profile-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #fff0f5, #ffe5ec);
+  border: 3px solid var(--card-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  box-shadow: 0 8px 20px rgba(255, 112, 166, 0.25);
+  animation: gentleBob 3s ease-in-out infinite alternate;
+}
+
+body.theme-night .profile-avatar {
+  background: linear-gradient(145deg, #3b3760, #2d2a4a);
+}
+
+.profile-avatar-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  font-size: 1.3rem;
+  animation: spinSlow 5s linear infinite;
+}
+
+.profile-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-name {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--primary-accent);
+  margin-bottom: 8px;
+}
+
+.profile-name-en {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.profile-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.profile-tag {
+  background: var(--badge-bg);
+  border: 1.5px solid var(--badge-border);
+  color: var(--text-main);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 14px;
+}
+
+.profile-intro {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+/* -------------------- Skills 技能 -------------------- */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px 18px;
+  width: 100%;
+}
+
+.skill-item {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1.5px solid rgba(255, 204, 213, 0.6);
+  border-radius: 16px;
+  padding: 10px 12px;
+  transition: all 0.25s ease;
+}
+
+body.theme-night .skill-item {
+  background: rgba(45, 42, 74, 0.6);
+  border-color: rgba(140, 120, 190, 0.4);
+}
+
+.skill-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(255, 112, 166, 0.2);
+  border-color: var(--primary-accent);
+}
+
+.skill-item-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.skill-emoji {
+  font-size: 1.1rem;
+}
+
+.skill-name {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--text-main);
+  flex: 1;
+}
+
+.skill-level-tag {
+  font-size: 0.68rem;
+  font-weight: 800;
+  background: var(--primary-accent);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.skill-bar {
+  width: 100%;
+  height: 9px;
+  background: rgba(255, 204, 213, 0.4);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+body.theme-night .skill-bar {
+  background: rgba(90, 80, 130, 0.4);
+}
+
+.skill-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, var(--secondary-accent), var(--primary-accent));
+  box-shadow: 0 0 8px rgba(255, 112, 166, 0.4);
+  animation: skillGrow 1.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes skillGrow {
+  0% { width: 0 !important; }
+}
+
+/* -------------------- Projects 作品 -------------------- */
+.projects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+}
+
+.project-item {
+  display: flex;
+  gap: 14px;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1.5px solid rgba(255, 204, 213, 0.6);
+  border-radius: 18px;
+  padding: 14px;
+  text-align: left;
+  transition: all 0.25s ease;
+}
+
+body.theme-night .project-item {
+  background: rgba(45, 42, 74, 0.6);
+  border-color: rgba(140, 120, 190, 0.4);
+}
+
+.project-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 112, 166, 0.2);
+  border-color: var(--primary-accent);
+}
+
+.project-thumb {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #fff0f5, #ffe5ec);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 4px 12px rgba(255, 112, 166, 0.2);
+}
+
+body.theme-night .project-thumb {
+  background: linear-gradient(145deg, #3b3760, #2d2a4a);
+}
+
+.project-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.project-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.project-name {
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--text-main);
+}
+
+.project-status {
+  font-size: 0.7rem;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.project-status.live {
+  background: #d8f3dc;
+  color: #2d6a4f;
+}
+
+.project-status.planning {
+  background: #ffe8a1;
+  color: #a56b00;
+}
+
+body.theme-night .project-status.live {
+  background: #2d5a3f;
+  color: #b7efc5;
+}
+
+body.theme-night .project-status.planning {
+  background: #5c4a1a;
+  color: #ffe8a1;
+}
+
+.project-desc {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.tech-chip {
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--badge-bg);
+  border: 1px solid var(--badge-border);
+  color: var(--primary-accent);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #fff;
+  background: var(--primary-accent);
+  padding: 5px 14px;
+  border-radius: 16px;
+  text-decoration: none;
+  box-shadow: 0 3px 8px rgba(255, 112, 166, 0.3);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.project-link:hover {
+  transform: scale(1.05);
+}
+
+.project-link.disabled {
+  background: #d9d4de;
+  color: #8a8394;
+  box-shadow: none;
+  cursor: default;
+}
+
+body.theme-night .project-link.disabled {
+  background: #4a4566;
+  color: #b8b3cc;
+}
+
+/* -------------------- Personal Page 響應式 -------------------- */
+@media (max-width: 640px) {
+  .section-heading-title {
+    font-size: 1.1rem;
+  }
+  .profile-body {
+    flex-direction: column;
+    text-align: center;
+  }
+  .profile-tags {
+    justify-content: center;
+  }
+  .profile-info {
+    text-align: center;
+  }
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+  .project-item {
+    flex-direction: column;
+  }
+  .project-thumb {
+    width: 48px;
+    height: 48px;
+    font-size: 1.6rem;
+  }
+}
