@@ -209,6 +209,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (userNameText) {
     userNameText.textContent = '江晏瑋';
   }
+  // 自動清理先前瀏覽器可能留下的舊名稱快取
+  try {
+    localStorage.removeItem('kawaii_user_name_010');
+  } catch (e) {}
 
   // ========================================================================
   // 4. 動態生成背景微星與氣泡 (Floating Sparkles)

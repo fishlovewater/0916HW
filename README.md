@@ -3,11 +3,14 @@
 > 一個融合粉彩美學（Kawaii Aesthetic）、毛玻璃擬態（Glassmorphism）與豐富互動動態的個人化多功能網頁。  
 > 讓可愛的小動物、即時時鐘與元氣手帳陪伴您度過每一刻溫暖時光！ ✨
 
+🌐 **線上展示 (Live Demo)**：[https://fishlovewater.github.io/0916HW/](https://fishlovewater.github.io/0916HW/)
+
 ---
 
 ## 👤 專案作者
 - **作者姓名**：江晏瑋
 - **作品名稱**：江晏瑋的元氣小天地 (療癒時光小天地)
+- **Live Demo**：[https://fishlovewater.github.io/0916HW/](https://fishlovewater.github.io/0916HW/)
 
 ---
 
@@ -98,7 +101,11 @@
 
 ## 🚀 如何執行與預覽
 
-### 方法一：直接於瀏覽器開啟（最簡便）
+### 🌐 線上展示 (Live Demo)
+直接點擊此連結即可立即線上體驗：  
+👉 **[https://fishlovewater.github.io/0916HW/](https://fishlovewater.github.io/0916HW/)**
+
+### 方法一：直接於瀏覽器開啟（本地最簡便）
 本專案為純前端靜態架構，無須安裝複雜的後端環境或套件：
 1. 下載或進入本專案資料夾 `0916HW`。
 2. 對著 `index.html` 點擊滑鼠右鍵，選擇以任何主流瀏覽器（Google Chrome、Microsoft Edge、Safari 等）開啟即可。
