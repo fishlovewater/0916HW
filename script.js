@@ -284,11 +284,71 @@ document.addEventListener('DOMContentLoaded', () => {
   const animalsTrack = document.getElementById('animalsTrack');
   const treatsLayer = document.getElementById('treatsLayer');
 
-  // 小動物精緻 SVG 模板
+  // 小動物精緻 SVG 模板 (小羊、小貓咪、小兔子)
   const CRITTER_TEMPLATES = [
     {
+      id: 'sheep',
+      name: '小羊',
+      quotes: ['咩～ 🐑', '毛茸茸的好暖和～ ☁️', '嚼嚼青草真香甜 🌱', '想要和小主人抱抱 💕', '今天也是元氣滿滿的一天～ ✨'],
+      svg: `
+        <svg class="critter-sprite" viewBox="0 0 100 100">
+          <!-- 羊尾巴小棉球 -->
+          <circle class="critter-tail" cx="20" cy="68" r="6" fill="#FFFFFF" stroke="#E9ECEF" stroke-width="1.2" />
+          <!-- 蓬鬆羊毛身體 (多層雲朵質感) -->
+          <g class="critter-body">
+            <ellipse cx="50" cy="68" rx="25" ry="20" fill="#FFFFFF" stroke="#E9ECEF" stroke-width="1.2" />
+            <circle cx="32" cy="64" r="10" fill="#FFFFFF" />
+            <circle cx="44" cy="56" r="9" fill="#FFFFFF" />
+            <circle cx="58" cy="56" r="9" fill="#FFFFFF" />
+            <circle cx="68" cy="64" r="9" fill="#FFFFFF" />
+            <circle cx="36" cy="74" r="9" fill="#FFFFFF" />
+            <circle cx="64" cy="74" r="9" fill="#FFFFFF" />
+            <circle cx="50" cy="74" r="9" fill="#FFFFFF" />
+            <!-- 粉紅項圈與黃金小鈴鐺 -->
+            <path d="M 40 64 Q 50 71 60 64" stroke="#FF70A6" stroke-width="2.5" fill="none" stroke-linecap="round" />
+            <circle cx="50" cy="68" r="3.2" fill="#FFD166" />
+            <circle cx="50" cy="69" r="1" fill="#E09F3E" />
+          </g>
+          <!-- 小羊頭部 -->
+          <g class="critter-head">
+            <!-- 羊耳朵 (下垂萌萌耳) -->
+            <ellipse cx="28" cy="46" rx="9" ry="5.5" fill="#FFE5D9" transform="rotate(-20 28 46)" />
+            <ellipse cx="28" cy="46" rx="6" ry="3.5" fill="#FFB4A2" transform="rotate(-20 28 46)" />
+            <ellipse cx="72" cy="46" rx="9" ry="5.5" fill="#FFE5D9" transform="rotate(20 72 46)" />
+            <ellipse cx="72" cy="46" rx="6" ry="3.5" fill="#FFB4A2" transform="rotate(20 72 46)" />
+            <!-- 臉蛋 -->
+            <ellipse cx="50" cy="48" rx="20" ry="18" fill="#FFE5D9" />
+            <!-- 頭頂蓬鬆棉花糖羊毛 -->
+            <circle cx="42" cy="33" r="8" fill="#FFFFFF" stroke="#E9ECEF" stroke-width="1" />
+            <circle cx="58" cy="33" r="8" fill="#FFFFFF" stroke="#E9ECEF" stroke-width="1" />
+            <circle cx="50" cy="30" r="9" fill="#FFFFFF" stroke="#E9ECEF" stroke-width="1" />
+            <circle cx="50" cy="33" r="7" fill="#FFFFFF" />
+            <!-- 水靈大眼睛 -->
+            <ellipse cx="42" cy="46" rx="3.4" ry="4.2" fill="#3D2C2E" />
+            <circle cx="43.2" cy="44.2" r="1.3" fill="#FFFFFF" />
+            <ellipse cx="58" cy="46" rx="3.4" ry="4.2" fill="#3D2C2E" />
+            <circle cx="59.2" cy="44.2" r="1.3" fill="#FFFFFF" />
+            <!-- 粉嫩腮紅 -->
+            <ellipse cx="35" cy="51" rx="4.2" ry="2.5" fill="#FF8FA3" opacity="0.75" />
+            <ellipse cx="65" cy="51" rx="4.2" ry="2.5" fill="#FF8FA3" opacity="0.75" />
+            <!-- 嘴巴與小鼻 -->
+            <polygon points="50,50 48.5,48.5 51.5,48.5" fill="#FF758F" />
+            <path d="M 50 50 L 50 52 M 48 53 Q 50 55 52 53" stroke="#3D2C2E" stroke-width="1.5" fill="none" stroke-linecap="round" />
+            <!-- 頭頂小粉花 -->
+            <circle cx="38" cy="27" r="3.2" fill="#FFAFCC" />
+            <circle cx="38" cy="27" r="1.3" fill="#FFE66D" />
+          </g>
+          <!-- 羊蹄子腳腳 -->
+          <g class="critter-feet">
+            <ellipse cx="38" cy="85" rx="5.5" ry="4" fill="#5E503F" />
+            <ellipse cx="62" cy="85" rx="5.5" ry="4" fill="#5E503F" />
+          </g>
+        </svg>
+      `
+    },
+    {
       id: 'cat',
-      name: '小橘貓',
+      name: '小貓咪',
       quotes: ['喵嗚~ 🐾', '呼嚕呼嚕 🥰', '要摸摸嗎？🐱', '最喜歡小魚乾了！🐟', '伸個大懶腰～ (=^･ω･^=)'],
       svg: `
         <svg class="critter-sprite" viewBox="0 0 100 100">
@@ -332,7 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     {
       id: 'bunny',
-      name: '雪花兔',
+      name: '小兔子',
       quotes: ['蹦蹦跳！🐰', '想要胡蘿蔔 🥕', '摸摸耳朵好舒服～ 💕', '今天天氣真好呀！🌸', '咕嚕咕嚕 (*´ω｀*)'],
       svg: `
         <svg class="critter-sprite" viewBox="0 0 100 100">
@@ -367,92 +427,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <g class="critter-feet">
             <ellipse cx="38" cy="85" rx="6" ry="4" fill="#FFFFFF" stroke="#F0E6EF" stroke-width="1" />
             <ellipse cx="62" cy="85" rx="6" ry="4" fill="#FFFFFF" stroke="#F0E6EF" stroke-width="1" />
-          </g>
-        </svg>
-      `
-    },
-    {
-      id: 'shiba',
-      name: '柴柴',
-      quotes: ['汪汪！柴柴在此 🐕', '主人今天也超級棒！✨', '去散步囉～ 🦴', '嘿嘿嘿開心！(≧∇≦)', '搖尾巴搖到停不下來！'],
-      svg: `
-        <svg class="critter-sprite" viewBox="0 0 100 100">
-          <!-- 捲尾巴 -->
-          <path class="critter-tail" d="M 22 66 Q 12 50 18 42 Q 26 40 26 52 Z" fill="#E29578" />
-          <!-- 身體 -->
-          <ellipse class="critter-body" cx="50" cy="68" rx="26" ry="21" fill="#E29578" />
-          <ellipse cx="50" cy="72" rx="16" ry="14" fill="#FFF1E6" />
-          <!-- 紅色領巾 -->
-          <path d="M 36 58 Q 50 66 64 58 L 50 70 Z" fill="#E63946" />
-          <circle cx="50" cy="64" r="3" fill="#FFD166" />
-          <!-- 頭部 -->
-          <g class="critter-head">
-            <!-- 三角耳朵 -->
-            <polygon points="34,40 28,20 44,28" fill="#E29578" />
-            <polygon points="35,37 31,24 42,30" fill="#FFF1E6" />
-            <polygon points="66,40 72,20 56,28" fill="#E29578" />
-            <polygon points="65,37 69,24 58,30" fill="#FFF1E6" />
-            <!-- 臉蛋 -->
-            <circle cx="50" cy="44" r="22" fill="#E29578" />
-            <!-- 白臉頰 -->
-            <path d="M 32 46 Q 30 58 50 60 Q 70 58 68 46 Q 60 52 50 52 Q 40 52 32 46 Z" fill="#FFF1E6" />
-            <!-- 眼睛 -->
-            <ellipse cx="42" cy="42" rx="3.2" ry="3.8" fill="#2B2D42" />
-            <circle cx="43" cy="41" r="1.2" fill="#FFFFFF" />
-            <ellipse cx="58" cy="42" rx="3.2" ry="3.8" fill="#2B2D42" />
-            <circle cx="59" cy="41" r="1.2" fill="#FFFFFF" />
-            <!-- 白眉毛斑 -->
-            <ellipse cx="42" cy="35" rx="3" ry="1.8" fill="#FFF1E6" />
-            <ellipse cx="58" cy="35" rx="3" ry="1.8" fill="#FFF1E6" />
-            <!-- 腮紅 -->
-            <ellipse cx="36" cy="48" rx="4" ry="2.5" fill="#FFB4A2" opacity="0.75" />
-            <ellipse cx="64" cy="48" rx="4" ry="2.5" fill="#FFB4A2" opacity="0.75" />
-            <!-- 黑鼻子與微笑 -->
-            <ellipse cx="50" cy="48" rx="3" ry="2.2" fill="#2B2D42" />
-            <path d="M 46 52 Q 50 55 54 52" stroke="#2B2D42" stroke-width="1.8" fill="none" stroke-linecap="round" />
-          </g>
-          <!-- 腳腳 -->
-          <g class="critter-feet">
-            <ellipse cx="38" cy="86" rx="6" ry="4" fill="#FFF1E6" />
-            <ellipse cx="62" cy="86" rx="6" ry="4" fill="#FFF1E6" />
-          </g>
-        </svg>
-      `
-    },
-    {
-      id: 'duck',
-      name: '小波鴨',
-      quotes: ['嘎嘎嘎～ 🐥', '搖搖擺擺向前走！🌾', '好想跳進水池裡玩水 💦', '看我頭頂的小豆芽！🌱', '肚子圓滾滾真滿足～'],
-      svg: `
-        <svg class="critter-sprite" viewBox="0 0 100 100">
-          <!-- 尾巴小羽毛 -->
-          <path class="critter-tail" d="M 24 66 Q 16 62 18 54 Q 26 58 28 66 Z" fill="#FFE066" />
-          <!-- 身體 -->
-          <ellipse class="critter-body" cx="50" cy="68" rx="25" ry="21" fill="#FFE066" />
-          <!-- 翅膀 -->
-          <ellipse class="critter-tail" cx="42" cy="68" rx="10" ry="14" fill="#FFD166" transform="rotate(-15 42 68)" />
-          <!-- 頭部 -->
-          <g class="critter-head">
-            <!-- 頭頂小草芽 -->
-            <path d="M 50 26 Q 44 18 40 22 Q 46 25 49 27 Z" fill="#70E000" />
-            <path d="M 50 26 Q 56 16 62 20 Q 56 24 51 27 Z" fill="#70E000" />
-            <circle cx="50" cy="44" r="21" fill="#FFE066" />
-            <!-- 眼睛 -->
-            <ellipse cx="44" cy="42" rx="3.2" ry="3.8" fill="#2B2D42" />
-            <circle cx="45" cy="40.5" r="1.2" fill="#FFFFFF" />
-            <ellipse cx="58" cy="42" rx="3.2" ry="3.8" fill="#2B2D42" />
-            <circle cx="59" cy="40.5" r="1.2" fill="#FFFFFF" />
-            <!-- 腮紅 -->
-            <ellipse cx="38" cy="48" rx="4" ry="2.5" fill="#FF9E00" opacity="0.45" />
-            <ellipse cx="64" cy="48" rx="4" ry="2.5" fill="#FF9E00" opacity="0.45" />
-            <!-- 橘黃鴨扁嘴 -->
-            <ellipse cx="52" cy="49" rx="9" ry="5.5" fill="#F77F00" />
-            <ellipse cx="52" cy="47" rx="8" ry="4" fill="#FCBF49" />
-          </g>
-          <!-- 蹼狀腳丫 -->
-          <g class="critter-feet">
-            <ellipse cx="40" cy="86" rx="7" ry="3.5" fill="#F77F00" />
-            <ellipse cx="60" cy="86" rx="7" ry="3.5" fill="#F77F00" />
           </g>
         </svg>
       `
@@ -579,9 +553,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 初始化建立小動物群
+  // 初始化建立小動物群 (小羊、小貓咪、小兔子 共三隻)
   const critters = [];
-  const initialPositions = [18, 42, 65, 82];
+  const initialPositions = [20, 50, 80];
   CRITTER_TEMPLATES.forEach((tmpl, i) => {
     critters.push(new Critter(tmpl, initialPositions[i]));
   });
@@ -597,8 +571,8 @@ document.addEventListener('DOMContentLoaded', () => {
     newCritter.showSpeech(`我是新來的 ${tmpl.name} 🐾`);
     spawnHeartBurst(window.innerWidth * (randomX / 100), window.innerHeight - 120);
 
-    if (critters.length > 8) {
-      // 保持最多 8 隻，過多時移除最老的一隻
+    if (critters.length > 6) {
+      // 保持草坡寬敞舒適，過多時移除最老的一隻
       const oldest = critters.shift();
       if (oldest && oldest.el) oldest.el.remove();
     }
@@ -836,4 +810,376 @@ document.addEventListener('DOMContentLoaded', () => {
       soundLabel.textContent = '靜音中';
     }
   });
+
+  // ========================================================================
+  // 10. 日曆手帳記事本模組 (Kawaii Notepad & Diary Module)
+  // ========================================================================
+  const dateDisplayBtn = document.getElementById('dateDisplayBtn');
+  const notepadModal = document.getElementById('notepadModal');
+  const closeNotepadBtn = document.getElementById('closeNotepadBtn');
+  const notepadDateTitle = document.getElementById('notepadDateTitle');
+  const notepadTextarea = document.getElementById('notepadTextarea');
+  const moodChips = document.getElementById('moodChips');
+  const tabDiaryBtn = document.getElementById('tabDiaryBtn');
+  const tabTodoBtn = document.getElementById('tabTodoBtn');
+  const diaryTabContent = document.getElementById('diaryTabContent');
+  const todoTabContent = document.getElementById('todoTabContent');
+  const newTodoInput = document.getElementById('newTodoInput');
+  const addTodoBtn = document.getElementById('addTodoBtn');
+  const todoList = document.getElementById('todoList');
+  const todoCount = document.getElementById('todoCount');
+  const saveStatus = document.getElementById('saveStatus');
+  const clearNoteBtn = document.getElementById('clearNoteBtn');
+  const saveNoteBtn = document.getElementById('saveNoteBtn');
+
+  const STORAGE_KEY_NOTE = 'kawaii_notepad_text_010';
+  const STORAGE_KEY_MOOD = 'kawaii_notepad_mood_010';
+  const STORAGE_KEY_TODOS = 'kawaii_notepad_todos_010';
+
+  // 讀取既有筆記與心情
+  const savedNoteText = localStorage.getItem(STORAGE_KEY_NOTE);
+  if (savedNoteText !== null) {
+    notepadTextarea.value = savedNoteText;
+  }
+
+  const savedMood = localStorage.getItem(STORAGE_KEY_MOOD);
+  if (savedMood && moodChips) {
+    moodChips.querySelectorAll('.mood-chip').forEach((chip) => {
+      chip.classList.toggle('active', chip.dataset.mood === savedMood);
+    });
+  }
+
+  // 主頁待辦 DOM 元件
+  const homeTodoList = document.getElementById('homeTodoList');
+  const homeTodoBadge = document.getElementById('homeTodoBadge');
+  const homeTodoEmpty = document.getElementById('homeTodoEmpty');
+  const homeTodoInput = document.getElementById('homeTodoInput');
+  const homeTodoSubmitBtn = document.getElementById('homeTodoSubmitBtn');
+  const homeTodoAddToggleBtn = document.getElementById('homeTodoAddToggleBtn');
+  const homeOpenNotebookBtn = document.getElementById('homeOpenNotebookBtn');
+  const homeTodoTitleClick = document.getElementById('homeTodoTitleClick');
+
+  // 待辦清單資料
+  let todos = [];
+  try {
+    const rawTodos = localStorage.getItem(STORAGE_KEY_TODOS);
+    if (rawTodos) {
+      todos = JSON.parse(rawTodos);
+    }
+  } catch (e) {
+    todos = [];
+  }
+
+  function renderTodos() {
+    const totalCount = todos.length;
+    const doneCount = todos.filter((t) => t.done).length;
+
+    // 1. 渲染手帳彈窗中的代辦列表
+    if (todoCount) todoCount.textContent = totalCount;
+    if (todoList) {
+      todoList.innerHTML = '';
+      if (totalCount === 0) {
+        const emptyLi = document.createElement('li');
+        emptyLi.className = 'todo-empty-hint';
+        emptyLi.textContent = '🌸 目前還沒有待辦小事～在上方輸入並新增吧！';
+        todoList.appendChild(emptyLi);
+      } else {
+        todos.forEach((item, index) => {
+          const li = document.createElement('li');
+          li.className = `todo-item ${item.done ? 'done' : ''}`;
+
+          const contentWrap = document.createElement('div');
+          contentWrap.className = 'todo-content-wrap';
+
+          const checkbox = document.createElement('div');
+          checkbox.className = 'todo-checkbox';
+          checkbox.textContent = item.done ? '✔' : '';
+
+          const textSpan = document.createElement('span');
+          textSpan.className = 'todo-text';
+          textSpan.textContent = item.text;
+
+          contentWrap.appendChild(checkbox);
+          contentWrap.appendChild(textSpan);
+
+          contentWrap.addEventListener('click', () => {
+            item.done = !item.done;
+            audio.playPop();
+            saveTodos();
+            renderTodos();
+          });
+
+          const delBtn = document.createElement('button');
+          delBtn.className = 'todo-delete-btn';
+          delBtn.innerHTML = '✕';
+          delBtn.title = '刪除此項';
+          delBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            audio.playPop();
+            todos.splice(index, 1);
+            saveTodos();
+            renderTodos();
+          });
+
+          li.appendChild(contentWrap);
+          li.appendChild(delBtn);
+          todoList.appendChild(li);
+        });
+      }
+    }
+
+    // 2. 即時渲染主頁卡片上的「今日待辦」
+    if (homeTodoBadge) {
+      homeTodoBadge.textContent = totalCount === 0 ? '0 件小事' : `${doneCount}/${totalCount} 完成`;
+    }
+
+    if (homeTodoList && homeTodoEmpty) {
+      homeTodoList.innerHTML = '';
+      if (totalCount === 0) {
+        homeTodoEmpty.style.display = 'flex';
+        homeTodoList.style.display = 'none';
+      } else {
+        homeTodoEmpty.style.display = 'none';
+        homeTodoList.style.display = 'flex';
+
+        todos.forEach((item, index) => {
+          const li = document.createElement('li');
+          li.className = `home-todo-item ${item.done ? 'done' : ''}`;
+
+          const contentWrap = document.createElement('div');
+          contentWrap.className = 'home-todo-content';
+
+          const checkbox = document.createElement('div');
+          checkbox.className = 'home-todo-checkbox';
+          checkbox.textContent = item.done ? '✔' : '';
+
+          const textSpan = document.createElement('span');
+          textSpan.className = 'home-todo-text';
+          textSpan.textContent = item.text;
+          textSpan.title = item.text;
+
+          contentWrap.appendChild(checkbox);
+          contentWrap.appendChild(textSpan);
+
+          // 點擊項目切換完成狀態
+          contentWrap.addEventListener('click', () => {
+            item.done = !item.done;
+            audio.playPop();
+            if (item.done) {
+              const rect = li.getBoundingClientRect();
+              spawnFloatingHeart(rect.left + 24, rect.top);
+            }
+            saveTodos();
+            renderTodos();
+          });
+
+          // 點擊刪除按鈕
+          const delBtn = document.createElement('button');
+          delBtn.className = 'home-todo-del-btn';
+          delBtn.innerHTML = '✕';
+          delBtn.title = '刪除代辦';
+          delBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            audio.playPop();
+            todos.splice(index, 1);
+            saveTodos();
+            renderTodos();
+          });
+
+          li.appendChild(contentWrap);
+          li.appendChild(delBtn);
+          homeTodoList.appendChild(li);
+        });
+      }
+    }
+  }
+
+  function saveTodos() {
+    localStorage.setItem(STORAGE_KEY_TODOS, JSON.stringify(todos));
+  }
+
+  // 手帳彈窗中的新增代辦
+  function addNewTodo() {
+    const text = newTodoInput.value.trim();
+    if (!text) return;
+    todos.push({ text, done: false });
+    newTodoInput.value = '';
+    audio.playPop();
+    saveTodos();
+    renderTodos();
+  }
+
+  if (addTodoBtn && newTodoInput) {
+    addTodoBtn.addEventListener('click', addNewTodo);
+    newTodoInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') addNewTodo();
+    });
+  }
+
+  // 主頁卡片上的快速新增代辦
+  function addHomeTodo() {
+    if (!homeTodoInput) return;
+    const text = homeTodoInput.value.trim();
+    if (!text) return;
+    todos.push({ text, done: false });
+    homeTodoInput.value = '';
+    audio.playPop();
+    spawnFloatingHeart(window.innerWidth / 2, window.innerHeight * 0.38);
+    saveTodos();
+    renderTodos();
+  }
+
+  if (homeTodoSubmitBtn && homeTodoInput) {
+    homeTodoSubmitBtn.addEventListener('click', addHomeTodo);
+    homeTodoInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') addHomeTodo();
+    });
+  }
+
+  if (homeTodoAddToggleBtn && homeTodoInput) {
+    homeTodoAddToggleBtn.addEventListener('click', () => {
+      audio.playPop();
+      homeTodoInput.focus();
+    });
+  }
+
+  // 開啟手帳本並自動切換至「今日待辦」Tab
+  function openNotepadToTodo() {
+    openNotepad();
+    if (tabTodoBtn && tabDiaryBtn && diaryTabContent && todoTabContent) {
+      tabTodoBtn.classList.add('active');
+      tabDiaryBtn.classList.remove('active');
+      todoTabContent.classList.add('active');
+      diaryTabContent.classList.remove('active');
+    }
+  }
+
+  if (homeOpenNotebookBtn) {
+    homeOpenNotebookBtn.addEventListener('click', openNotepadToTodo);
+  }
+  if (homeTodoTitleClick) {
+    homeTodoTitleClick.addEventListener('click', openNotepadToTodo);
+  }
+
+  // 初始載入時立即渲染主頁待辦
+  renderTodos();
+
+  // 分頁切換
+  if (tabDiaryBtn && tabTodoBtn) {
+    tabDiaryBtn.addEventListener('click', () => {
+      audio.playPop();
+      tabDiaryBtn.classList.add('active');
+      tabTodoBtn.classList.remove('active');
+      diaryTabContent.classList.add('active');
+      todoTabContent.classList.remove('active');
+    });
+
+    tabTodoBtn.addEventListener('click', () => {
+      audio.playPop();
+      tabTodoBtn.classList.add('active');
+      tabDiaryBtn.classList.remove('active');
+      todoTabContent.classList.add('active');
+      diaryTabContent.classList.remove('active');
+    });
+  }
+
+  // 心情標籤點擊
+  if (moodChips) {
+    moodChips.addEventListener('click', (e) => {
+      const chip = e.target.closest('.mood-chip');
+      if (!chip) return;
+      audio.playPop();
+      moodChips.querySelectorAll('.mood-chip').forEach((c) => c.classList.remove('active'));
+      chip.classList.add('active');
+      localStorage.setItem(STORAGE_KEY_MOOD, chip.dataset.mood);
+    });
+  }
+
+  // 自動保存與手動保存
+  let autoSaveTimeout = null;
+  if (notepadTextarea) {
+    notepadTextarea.addEventListener('input', () => {
+      if (saveStatus) saveStatus.textContent = '✏️ 正在記錄...';
+      clearTimeout(autoSaveTimeout);
+      autoSaveTimeout = setTimeout(() => {
+        localStorage.setItem(STORAGE_KEY_NOTE, notepadTextarea.value);
+        if (saveStatus) saveStatus.textContent = '💾 已自動保存';
+      }, 600);
+    });
+  }
+
+  function openNotepad() {
+    audio.playChime();
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const date = String(now.getDate()).padStart(2, '0');
+    const dayName = daysChinese[now.getDay()];
+    if (notepadDateTitle) {
+      notepadDateTitle.textContent = `${year} 年 ${month} 月 ${date} 日 (${dayName}) 元氣手帳`;
+    }
+
+    renderTodos();
+    if (notepadModal) notepadModal.classList.add('active');
+  }
+
+  function closeNotepad() {
+    if (notepadModal) notepadModal.classList.remove('active');
+  }
+
+  if (dateDisplayBtn) {
+    dateDisplayBtn.addEventListener('click', openNotepad);
+    dateDisplayBtn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openNotepad();
+      }
+    });
+  }
+
+  if (closeNotepadBtn) {
+    closeNotepadBtn.addEventListener('click', closeNotepad);
+  }
+
+  if (notepadModal) {
+    notepadModal.addEventListener('click', (e) => {
+      if (e.target === notepadModal) closeNotepad();
+    });
+  }
+
+  // 按 Escape 關閉
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeNotepad();
+    }
+  });
+
+  // 清空手帳
+  if (clearNoteBtn) {
+    clearNoteBtn.addEventListener('click', () => {
+      if (confirm('確定要清空手帳中的內容嗎？(。•́︿•̀。)')) {
+        audio.playPop();
+        notepadTextarea.value = '';
+        todos = [];
+        saveTodos();
+        localStorage.removeItem(STORAGE_KEY_NOTE);
+        renderTodos();
+        if (saveStatus) saveStatus.textContent = '✨ 已清空';
+      }
+    });
+  }
+
+  // 完成儲存
+  if (saveNoteBtn) {
+    saveNoteBtn.addEventListener('click', () => {
+      audio.playChime();
+      localStorage.setItem(STORAGE_KEY_NOTE, notepadTextarea.value);
+      saveTodos();
+      if (saveStatus) saveStatus.textContent = '💖 保存成功！';
+      spawnHeartBurst(window.innerWidth / 2, window.innerHeight / 2);
+      setTimeout(() => {
+        closeNotepad();
+      }, 450);
+    });
+  }
 });

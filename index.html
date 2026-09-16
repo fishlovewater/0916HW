@@ -69,18 +69,56 @@
         <div class="ampm-tag" id="ampm">AM</div>
       </div>
 
-      <!-- 日期與星期 -->
-      <div class="date-display">
+      <!-- 日期與星期 (可點擊開啟記事手帳本) -->
+      <div class="date-display" id="dateDisplayBtn" role="button" tabindex="0" title="點擊開啟可愛記事本">
         <span class="calendar-icon">📅</span>
         <span id="fullDateText">2026 年 09 月 16 日</span>
         <span class="date-divider">•</span>
         <span id="dayOfWeekText" class="day-highlight">星期三</span>
+        <span class="notepad-hint-tag">📖 點開記事本</span>
       </div>
 
       <!-- 元氣心情小籤語 -->
       <div class="greeting-banner" id="greetingBanner">
         <span class="greeting-emoji">🌸</span>
         <span class="greeting-text" id="greetingText">正在讀取今日好心情...</span>
+      </div>
+
+      <!-- 今日代辦小清單 (主頁即時顯示) -->
+      <div class="home-todo-section" id="homeTodoSection">
+        <div class="home-todo-header">
+          <div class="home-todo-title-wrap" id="homeTodoTitleClick" role="button" tabindex="0" title="點擊開啟手帳待辦本">
+            <span class="home-todo-icon">📋</span>
+            <span class="home-todo-title">今日待辦</span>
+            <span class="home-todo-badge" id="homeTodoBadge">0/0 完成</span>
+          </div>
+          <div class="home-todo-actions">
+            <button class="home-todo-quick-btn" id="homeTodoAddToggleBtn" title="聚焦新增輸入框">
+              <span>➕ 新增待辦</span>
+            </button>
+            <button class="home-todo-notebook-btn" id="homeOpenNotebookBtn" title="開啟手帳待辦本">
+              <span>📖 手帳</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 快速新增輸入欄 -->
+        <div class="home-todo-input-bar" id="homeTodoInputBar">
+          <input type="text" id="homeTodoInput" placeholder="寫下今天要完成的小事... (按 Enter 新增)" maxlength="40" autocomplete="off">
+          <button id="homeTodoSubmitBtn" class="home-todo-submit-btn">新增</button>
+        </div>
+
+        <!-- 今日待辦項目清單 (主頁即時渲染) -->
+        <div class="home-todo-list-container">
+          <ul class="home-todo-list" id="homeTodoList">
+            <!-- 動態生成代辦項目 -->
+          </ul>
+          <!-- 無代辦時的可愛空狀態 -->
+          <div class="home-todo-empty" id="homeTodoEmpty">
+            <span class="empty-icon">🌸</span>
+            <span class="empty-text">今天還沒有待辦事項喔～點擊「➕ 新增」記錄一下吧！</span>
+          </div>
+        </div>
       </div>
 
       <!-- 小提示 -->
@@ -152,6 +190,76 @@
       <div class="modal-actions">
         <button class="modal-btn btn-cancel" id="cancelNameBtn">取消</button>
         <button class="modal-btn btn-save" id="saveNameBtn">儲存名字 ✨</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 可愛手帳記事本彈窗 (Kawaii Notepad Modal) -->
+  <div class="kawaii-modal-overlay" id="notepadModal">
+    <div class="kawaii-notebook-card">
+      <!-- 活頁孔裝飾 (Binder Rings) -->
+      <div class="binder-rings-strip">
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+        <div class="ring"></div>
+      </div>
+
+      <!-- 手帳標題欄 -->
+      <div class="notebook-header">
+        <div class="notebook-title-area">
+          <span class="notebook-sticker">📔</span>
+          <div class="notebook-title-info">
+            <h3 id="notepadDateTitle">2026 年 09 月 16 日 元氣手帳</h3>
+            <span class="notebook-subtitle">隨時記下今日美好時光與待辦事項 ✨</span>
+          </div>
+        </div>
+        <button class="notebook-close-btn" id="closeNotepadBtn" aria-label="關閉手帳" title="關閉手帳">✖</button>
+      </div>
+
+      <!-- 今日心情選擇標籤 (Mood Tags) -->
+      <div class="mood-selector-wrap">
+        <span class="mood-label">今日心情：</span>
+        <div class="mood-chips" id="moodChips">
+          <button class="mood-chip active" data-mood="🥰 開心">🥰 開心</button>
+          <button class="mood-chip" data-mood="🌸 悠閒">🌸 悠閒</button>
+          <button class="mood-chip" data-mood="🍰 甜蜜">🍰 甜蜜</button>
+          <button class="mood-chip" data-mood="⚡ 活力">⚡ 活力</button>
+          <button class="mood-chip" data-mood="💤 睏睏">💤 睏睏</button>
+        </div>
+      </div>
+
+      <!-- 手帳頁面分頁 Tab -->
+      <div class="notebook-tabs">
+        <button class="nb-tab active" id="tabDiaryBtn">📝 心情隨手記</button>
+        <button class="nb-tab" id="tabTodoBtn">📋 今日小願望待辦 (<span id="todoCount">0</span>)</button>
+      </div>
+
+      <!-- 內容區 1：心情隨手記 (Diary / Notes) -->
+      <div class="notebook-body tab-content active" id="diaryTabContent">
+        <textarea id="notepadTextarea" placeholder="親愛的小主人，今天發生了什麼有趣或開心的事呢？在這裡寫下來吧～ (´,,•ω•,,)♡"></textarea>
+      </div>
+
+      <!-- 內容區 2：今日小願望待辦 (To-Dos) -->
+      <div class="notebook-body tab-content" id="todoTabContent">
+        <div class="todo-input-bar">
+          <input type="text" id="newTodoInput" placeholder="寫下今天要完成的小事... (例如：喝8杯水、摸摸小貓)" maxlength="40">
+          <button id="addTodoBtn" class="todo-add-btn">➕ 新增</button>
+        </div>
+        <ul class="todo-list" id="todoList">
+          <!-- 動態生成 To-Do 項目 -->
+        </ul>
+      </div>
+
+      <!-- 底部功能列 -->
+      <div class="notebook-footer">
+        <div class="save-status" id="saveStatus">💾 已自動保存</div>
+        <div class="notebook-footer-actions">
+          <button class="nb-btn btn-clear-note" id="clearNoteBtn">清空內容</button>
+          <button class="nb-btn btn-save-note" id="saveNoteBtn">完成儲存 💖</button>
+        </div>
       </div>
     </div>
   </div>
