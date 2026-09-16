@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌸 療癒時光小天地 - 可愛即時時鐘 & 萌寵花園 🌸</title>
+  <meta name="description" content="一個簡潔、超可愛的互動時鐘網站，擁有動態夢幻背景、漫步的小動物群與趣味互動按鈕！">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-day">
+  <!-- 動態夢幻背景層 -->
+  <div class="sky-background" id="skyBackground">
+    <!-- 天體：太陽 / 晚霞 / 月亮 -->
+    <div class="celestial-body" id="celestialBody">
+      <div class="sun-moon-core"></div>
+      <div class="celestial-glow"></div>
+      <div class="moon-crater c1"></div>
+      <div class="moon-crater c2"></div>
+    </div>
+
+    <!-- 飄移的棉花糖雲朵群 -->
+    <div class="cloud-layer" id="cloudLayer">
+      <div class="cloud cloud-1"></div>
+      <div class="cloud cloud-2"></div>
+      <div class="cloud cloud-3"></div>
+      <div class="cloud cloud-4"></div>
+    </div>
+
+    <!-- 漂浮星光與氣泡容器 -->
+    <div class="sparkles-container" id="sparklesContainer"></div>
+  </div>
+
+  <!-- 主要內容容器 -->
+  <main class="main-wrapper">
+    <!-- 頂部中央：超可愛玻璃擬態時鐘與個人名牌卡片 -->
+    <div class="kawaii-card glass-card" id="mainCard">
+      <!-- 裝飾小耳 -->
+      <div class="card-bunny-ears">
+        <div class="ear ear-left"></div>
+        <div class="ear ear-right"></div>
+      </div>
+
+      <!-- 名字標籤與編輯按鈕 -->
+      <div class="user-badge-container">
+        <div class="user-badge" id="nameDisplayBtn" role="button" tabindex="0" title="點擊自訂名字">
+          <span class="badge-sparkle">✨</span>
+          <span class="badge-name" id="userNameText">可愛的小主人</span>
+          <span class="badge-tag">的元氣小天地</span>
+          <button class="edit-name-btn" id="editNameBtn" aria-label="修改名字" title="修改專屬暱稱">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 實時數字時鐘 (大字體 + 跳動愛心) -->
+      <div class="clock-display" id="clockDisplay">
+        <div class="time-segments">
+          <span class="digit hours" id="hours">12</span>
+          <span class="separator-heart" id="colon">♥</span>
+          <span class="digit minutes" id="minutes">00</span>
+          <span class="separator-seconds">:</span>
+          <span class="digit seconds" id="seconds">00</span>
+        </div>
+        <div class="ampm-tag" id="ampm">AM</div>
+      </div>
+
+      <!-- 日期與星期 -->
+      <div class="date-display">
+        <span class="calendar-icon">📅</span>
+        <span id="fullDateText">2026 年 09 月 16 日</span>
+        <span class="date-divider">•</span>
+        <span id="dayOfWeekText" class="day-highlight">星期三</span>
+      </div>
+
+      <!-- 元氣心情小籤語 -->
+      <div class="greeting-banner" id="greetingBanner">
+        <span class="greeting-emoji">🌸</span>
+        <span class="greeting-text" id="greetingText">正在讀取今日好心情...</span>
+      </div>
+
+      <!-- 小提示 -->
+      <div class="card-tips">
+        <span>💡 點擊下方按鈕餵食或摸摸小動物，看看牠們的可愛反應吧！</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- 底部小動物漫步樂園與地景草坡 -->
+  <section class="critter-playground" id="playground" aria-label="小動物走走草地">
+    <!-- 遠景草坡 -->
+    <div class="rolling-hills hill-back"></div>
+    <!-- 近景草坡 -->
+    <div class="rolling-hills hill-front">
+      <!-- 搖曳小花與草叢 -->
+      <div class="flora flora-1">🌸</div>
+      <div class="flora flora-2">🌼</div>
+      <div class="flora flora-3">🌷</div>
+      <div class="flora flora-4">🌱</div>
+      <div class="flora flora-5">🌸</div>
+      <div class="flora flora-6">🌼</div>
+    </div>
+
+    <!-- 小動物活動層 -->
+    <div class="animals-track" id="animalsTrack">
+      <!-- 小動物會由 JS 動態生成並在此處自由漫步 -->
+    </div>
+
+    <!-- 食物掉落層 -->
+    <div class="treats-layer" id="treatsLayer"></div>
+  </section>
+
+  <!-- 浮動超可愛按鈕操作欄 (Dock) -->
+  <nav class="kawaii-dock" aria-label="可愛互動操作欄">
+    <button class="dock-btn btn-feed" id="btnFeed" title="丟出美味點心餵食小動物">
+      <span class="btn-icon">🍪</span>
+      <span class="btn-label">餵食點心</span>
+    </button>
+    <button class="dock-btn btn-petals" id="btnPetals" title="滿螢幕飄落愛心與花瓣">
+      <span class="btn-icon">🌸</span>
+      <span class="btn-label">撒花愛心</span>
+    </button>
+    <button class="dock-btn btn-summon" id="btnSummon" title="召喚一隻新的可愛小夥伴">
+      <span class="btn-icon">🐾</span>
+      <span class="btn-label">召喚萌寵</span>
+    </button>
+    <button class="dock-btn btn-theme" id="btnTheme" title="切換白天、黃昏或星夜">
+      <span class="btn-icon" id="themeIcon">☀️</span>
+      <span class="btn-label" id="themeLabel">日光白晝</span>
+    </button>
+    <button class="dock-btn btn-sound" id="btnSound" title="開關可愛音效">
+      <span class="btn-icon" id="soundIcon">🔔</span>
+      <span class="btn-label" id="soundLabel">音效開</span>
+    </button>
+  </nav>
+
+  <!-- 修改名字的可愛彈窗 Modal -->
+  <div class="kawaii-modal-overlay" id="nameModal">
+    <div class="kawaii-modal-card">
+      <div class="modal-header">
+        <span class="modal-title-icon">🎀</span>
+        <h3>幫你的小天地取個可愛名字</h3>
+      </div>
+      <p class="modal-desc">輸入你希望顯示在首頁的暱稱或名字：</p>
+      <div class="modal-input-wrap">
+        <input type="text" id="nameInput" maxlength="15" placeholder="例如：兔兔、小明、肉圓..." autocomplete="off">
+      </div>
+      <div class="modal-actions">
+        <button class="modal-btn btn-cancel" id="cancelNameBtn">取消</button>
+        <button class="modal-btn btn-save" id="saveNameBtn">儲存名字 ✨</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 粒子特效畫布 (撒花、愛心、煙火) -->
+  <canvas id="particleCanvas"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>

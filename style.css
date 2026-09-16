@@ -1,0 +1,1059 @@
+/* ==========================================================================
+   🌸 療癒可愛時光 - 超萌設計系統 (Kawaii Design System) 🌸
+   ========================================================================== */
+
+:root {
+  /* 白天粉彩色彩主題 (Day Theme) */
+  --bg-sky-top: #bde0fe;
+  --bg-sky-mid: #ffcbf2;
+  --bg-sky-bottom: #fcf6bd;
+  --celestial-color: #ffd166;
+  --celestial-glow: rgba(255, 209, 102, 0.45);
+  --cloud-color: rgba(255, 255, 255, 0.88);
+  --cloud-shadow: rgba(255, 182, 193, 0.25);
+  
+  --hill-back: #a7c957;
+  --hill-front: #6a994e;
+  --hill-highlight: #b5e48c;
+
+  --card-bg: rgba(255, 255, 255, 0.72);
+  --card-border: rgba(255, 255, 255, 0.85);
+  --card-shadow: 0 16px 40px rgba(186, 142, 199, 0.22);
+  --text-main: #4a4e69;
+  --text-muted: #857088;
+  --primary-accent: #ff70a6;
+  --secondary-accent: #70d6ff;
+  --badge-bg: #fff0f5;
+  --badge-border: #ffccd5;
+
+  --dock-bg: rgba(255, 255, 255, 0.85);
+  --dock-border: rgba(255, 255, 255, 0.9);
+  --dock-shadow: 0 12px 30px rgba(142, 110, 160, 0.2);
+}
+
+/* 黃昏晚霞主題 (Sunset Theme) */
+body.theme-sunset {
+  --bg-sky-top: #f72585;
+  --bg-sky-mid: #b5179e;
+  --bg-sky-bottom: #fca311;
+  --celestial-color: #ff9e00;
+  --celestial-glow: rgba(255, 158, 0, 0.55);
+  --cloud-color: rgba(255, 230, 240, 0.82);
+  --cloud-shadow: rgba(181, 23, 158, 0.35);
+
+  --hill-back: #7f5539;
+  --hill-front: #582f0e;
+  --hill-highlight: #9c6644;
+
+  --card-bg: rgba(255, 245, 250, 0.75);
+  --card-border: rgba(255, 220, 240, 0.9);
+  --card-shadow: 0 16px 40px rgba(120, 30, 80, 0.28);
+  --text-main: #3d1b38;
+  --text-muted: #724c6d;
+  --primary-accent: #ff477e;
+  --secondary-accent: #ffaa00;
+  --badge-bg: #ffe5ec;
+  --badge-border: #ffb3c1;
+}
+
+/* 星空黑夜主題 (Night Theme) */
+body.theme-night {
+  --bg-sky-top: #0f1026;
+  --bg-sky-mid: #1f2041;
+  --bg-sky-bottom: #3b3355;
+  --celestial-color: #fff1b0;
+  --celestial-glow: rgba(255, 241, 176, 0.65);
+  --cloud-color: rgba(94, 84, 142, 0.55);
+  --cloud-shadow: rgba(15, 16, 38, 0.5);
+
+  --hill-back: #283618;
+  --hill-front: #1b2612;
+  --hill-highlight: #3b5020;
+
+  --card-bg: rgba(35, 33, 64, 0.78);
+  --card-border: rgba(110, 95, 155, 0.5);
+  --card-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  --text-main: #f3f0f7;
+  --text-muted: #b8b3cc;
+  --primary-accent: #e0aaff;
+  --secondary-accent: #7bf1a8;
+  --badge-bg: #2d2a4a;
+  --badge-border: #524b75;
+
+  --dock-bg: rgba(30, 28, 55, 0.85);
+  --dock-border: rgba(90, 80, 130, 0.6);
+  --dock-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   全域基礎重置與排版
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+body {
+  font-family: 'Zen Maru Gothic', 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  color: var(--text-main);
+  transition: background 0.8s ease;
+}
+
+/* ==========================================================================
+   動態背景層 (Sky, Sun/Moon, Clouds, Sparkles)
+   ========================================================================== */
+.sky-background {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--bg-sky-top) 0%, var(--bg-sky-mid) 50%, var(--bg-sky-bottom) 100%);
+  z-index: 1;
+  transition: background 0.8s ease;
+  overflow: hidden;
+}
+
+/* 天體：太陽與月亮 */
+.celestial-body {
+  position: absolute;
+  top: 7%;
+  right: 12%;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: var(--celestial-color);
+  box-shadow: 0 0 45px var(--celestial-glow), inset 0 0 15px rgba(255, 255, 255, 0.8);
+  transition: all 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: celestialFloat 6s ease-in-out infinite alternate;
+  z-index: 2;
+}
+
+.moon-crater {
+  position: absolute;
+  background: rgba(200, 180, 140, 0.35);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.moon-crater.c1 { width: 20px; height: 20px; top: 22px; left: 24px; }
+.moon-crater.c2 { width: 14px; height: 14px; bottom: 20px; right: 26px; }
+
+body.theme-night .moon-crater {
+  opacity: 1;
+}
+
+@keyframes celestialFloat {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-12px) scale(1.04); }
+}
+
+/* 浮動棉花糖雲朵群 */
+.cloud-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.cloud {
+  position: absolute;
+  background: var(--cloud-color);
+  border-radius: 100px;
+  filter: drop-shadow(0 8px 16px var(--cloud-shadow));
+  transition: background 0.8s ease;
+  animation: floatCloud linear infinite;
+}
+
+.cloud::before, .cloud::after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.cloud-1 {
+  width: 170px;
+  height: 52px;
+  top: 14%;
+  left: -200px;
+  animation-duration: 38s;
+}
+.cloud-1::before {
+  width: 65px;
+  height: 65px;
+  top: -28px;
+  left: 28px;
+}
+.cloud-1::after {
+  width: 80px;
+  height: 80px;
+  top: -38px;
+  right: 28px;
+}
+
+.cloud-2 {
+  width: 220px;
+  height: 64px;
+  top: 26%;
+  left: -260px;
+  animation-duration: 52s;
+  animation-delay: 8s;
+  opacity: 0.85;
+}
+.cloud-2::before {
+  width: 80px;
+  height: 80px;
+  top: -35px;
+  left: 35px;
+}
+.cloud-2::after {
+  width: 100px;
+  height: 100px;
+  top: -46px;
+  right: 40px;
+}
+
+.cloud-3 {
+  width: 140px;
+  height: 45px;
+  top: 8%;
+  left: -160px;
+  animation-duration: 44s;
+  animation-delay: 18s;
+  opacity: 0.75;
+}
+.cloud-3::before {
+  width: 50px;
+  height: 50px;
+  top: -22px;
+  left: 22px;
+}
+.cloud-3::after {
+  width: 60px;
+  height: 60px;
+  top: -28px;
+  right: 22px;
+}
+
+.cloud-4 {
+  width: 200px;
+  height: 58px;
+  top: 40%;
+  left: -230px;
+  animation-duration: 48s;
+  animation-delay: 24s;
+  opacity: 0.6;
+}
+.cloud-4::before {
+  width: 70px;
+  height: 70px;
+  top: -30px;
+  left: 32px;
+}
+.cloud-4::after {
+  width: 85px;
+  height: 85px;
+  top: -38px;
+  right: 32px;
+}
+
+@keyframes floatCloud {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(100vw + 320px)); }
+}
+
+/* 浮動微星與亮點 */
+.sparkles-container {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.sparkle-dot {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+  animation: sparkleTwinkle 3s ease-in-out infinite alternate;
+}
+
+@keyframes sparkleTwinkle {
+  0% { transform: scale(0.3) rotate(0deg); opacity: 0.2; }
+  50% { transform: scale(1.2) rotate(45deg); opacity: 1; }
+  100% { transform: scale(0.4) rotate(90deg); opacity: 0.3; }
+}
+
+/* ==========================================================================
+   主要時鐘與名牌卡片 (Kawaii Main Card)
+   ========================================================================== */
+.main-wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: clamp(24px, 4.5vh, 48px);
+  pointer-events: none;
+}
+
+.kawaii-card {
+  pointer-events: auto;
+  position: relative;
+  width: min(92vw, 560px);
+  background: var(--card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid var(--card-border);
+  border-radius: 36px;
+  padding: 30px 28px 24px;
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  animation: cardEnter 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.kawaii-card:hover {
+  transform: translateY(-4px) scale(1.008);
+}
+
+@keyframes cardEnter {
+  0% { opacity: 0; transform: translateY(-30px) scale(0.92); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* 可愛兔耳朵裝飾 */
+.card-bunny-ears {
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.ear {
+  width: 28px;
+  height: 38px;
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-bottom: none;
+  border-radius: 20px 20px 0 0;
+  position: relative;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 -4px 10px rgba(255, 182, 193, 0.2);
+}
+
+.ear::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 5px;
+  right: 5px;
+  bottom: 0;
+  background: rgba(255, 160, 180, 0.4);
+  border-radius: 14px 14px 0 0;
+}
+
+.ear-left { transform: rotate(-14deg); }
+.ear-right { transform: rotate(14deg); }
+
+/* 使用者姓名徽章 */
+.user-badge-container {
+  margin-bottom: 12px;
+}
+
+.user-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--badge-bg);
+  border: 2px solid var(--badge-border);
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(255, 112, 166, 0.15);
+  transition: all 0.25s ease;
+}
+
+.user-badge:hover {
+  transform: scale(1.05);
+  background: #fff;
+  border-color: var(--primary-accent);
+}
+
+.badge-sparkle {
+  font-size: 1.2rem;
+  animation: spinSlow 5s linear infinite;
+}
+
+.badge-name {
+  color: var(--primary-accent);
+  font-size: 1.18rem;
+  font-weight: 900;
+}
+
+.badge-tag {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.edit-name-btn {
+  background: var(--primary-accent);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  margin-left: 4px;
+}
+
+.edit-name-btn:hover {
+  transform: scale(1.2) rotate(15deg);
+}
+
+@keyframes spinSlow {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 數字時鐘展示 (Large & Cute) */
+.clock-display {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+  margin: 8px 0 10px;
+}
+
+.time-segments {
+  display: flex;
+  align-items: baseline;
+  font-family: 'Zen Maru Gothic', 'Nunito', sans-serif;
+  font-size: clamp(3rem, 7vw, 4.4rem);
+  font-weight: 900;
+  letter-spacing: 2px;
+  line-height: 1;
+  color: var(--text-main);
+  text-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.separator-heart {
+  color: var(--primary-accent);
+  font-size: clamp(2rem, 4.5vw, 2.8rem);
+  margin: 0 4px;
+  display: inline-block;
+  animation: heartBeating 1.2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.separator-seconds {
+  opacity: 0.45;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  margin: 0 2px;
+}
+
+.digit.seconds {
+  font-size: clamp(1.8rem, 4.2vw, 2.7rem);
+  color: var(--primary-accent);
+  font-weight: 700;
+}
+
+.ampm-tag {
+  background: var(--primary-accent);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.95rem;
+  padding: 4px 10px;
+  border-radius: 12px;
+  letter-spacing: 1px;
+  box-shadow: 0 3px 8px rgba(255, 112, 166, 0.35);
+  animation: gentleBob 3s ease-in-out infinite alternate;
+}
+
+@keyframes heartBeating {
+  0%, 100% { transform: scale(1); }
+  15% { transform: scale(1.28); }
+  30% { transform: scale(1.05); }
+  45% { transform: scale(1.2); }
+}
+
+@keyframes gentleBob {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-4px); }
+}
+
+/* 日期與星期 */
+.date-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 14px;
+}
+
+.calendar-icon {
+  font-size: 1.15rem;
+}
+
+.date-divider {
+  color: var(--primary-accent);
+  opacity: 0.6;
+}
+
+.day-highlight {
+  color: var(--primary-accent);
+  font-weight: 800;
+}
+
+/* 心情與問候籤語 */
+.greeting-banner {
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px dashed var(--badge-border);
+  padding: 10px 18px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 12px;
+  transition: all 0.3s ease;
+}
+
+.greeting-emoji {
+  font-size: 1.3rem;
+  animation: wiggle 2s ease-in-out infinite;
+}
+
+.greeting-text {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.4;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-10deg); }
+  75% { transform: rotate(10deg); }
+}
+
+.card-tips {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  opacity: 0.85;
+}
+
+/* ==========================================================================
+   底部地景草坡與小動物樂園 (Critter Playground)
+   ========================================================================= */
+.critter-playground {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: clamp(200px, 32vh, 320px);
+  z-index: 5;
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* 遠景起伏丘陵 */
+.rolling-hills {
+  position: absolute;
+  left: -5%;
+  width: 110%;
+  height: 100%;
+  border-radius: 50% 50% 0 0 / 70px 70px 0 0;
+  transition: background 0.8s ease;
+}
+
+.hill-back {
+  bottom: -40px;
+  background: var(--hill-back);
+  opacity: 0.75;
+  border-radius: 65% 55% 0 0 / 90px 90px 0 0;
+}
+
+.hill-front {
+  bottom: -65px;
+  background: var(--hill-front);
+  border-radius: 50% 50% 0 0 / 80px 80px 0 0;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* 搖曳的花草 */
+.flora {
+  position: absolute;
+  font-size: 1.4rem;
+  transform-origin: bottom center;
+  animation: floraSway 3s ease-in-out infinite alternate;
+}
+
+.flora-1 { left: 8%; top: 40px; animation-delay: 0.2s; }
+.flora-2 { left: 22%; top: 45px; animation-delay: 1.1s; font-size: 1.2rem; }
+.flora-3 { left: 45%; top: 38px; animation-delay: 0.6s; }
+.flora-4 { left: 68%; top: 42px; animation-delay: 1.8s; font-size: 1.3rem; }
+.flora-5 { left: 85%; top: 36px; animation-delay: 0.9s; }
+.flora-6 { left: 93%; top: 44px; animation-delay: 1.4s; font-size: 1.2rem; }
+
+@keyframes floraSway {
+  0% { transform: rotate(-8deg); }
+  100% { transform: rotate(8deg); }
+}
+
+/* 小動物跑道層 */
+.animals-track {
+  position: absolute;
+  inset: 0;
+  pointer-events: auto;
+}
+
+/* 小動物通用本體 */
+.critter {
+  position: absolute;
+  bottom: 75px;
+  cursor: pointer;
+  transition: transform 0.15s ease-out;
+  transform-origin: bottom center;
+  will-change: transform, left;
+  z-index: 10;
+}
+
+.critter:hover {
+  filter: drop-shadow(0 0 10px rgba(255, 214, 165, 0.9));
+}
+
+.critter-sprite {
+  width: 68px;
+  height: 68px;
+  display: block;
+}
+
+/* 小動物動作動畫 */
+.critter.walking .critter-body {
+  animation: critterWalkBob 0.4s ease-in-out infinite alternate;
+}
+
+.critter.walking .critter-feet {
+  animation: critterStep 0.4s ease-in-out infinite alternate;
+}
+
+.critter.walking .critter-tail {
+  animation: critterWag 0.5s ease-in-out infinite alternate;
+}
+
+.critter.eating .critter-head {
+  animation: critterMunch 0.3s ease-in-out infinite alternate;
+}
+
+.critter.happy {
+  animation: critterJump 0.6s ease-in-out;
+}
+
+@keyframes critterWalkBob {
+  0% { transform: translateY(0) rotate(0deg); }
+  100% { transform: translateY(-6px) rotate(2deg); }
+}
+
+@keyframes critterStep {
+  0% { transform: rotate(-12deg); }
+  100% { transform: rotate(12deg); }
+}
+
+@keyframes critterWag {
+  0% { transform: rotate(-18deg); }
+  100% { transform: rotate(18deg); }
+}
+
+@keyframes critterMunch {
+  0% { transform: translateY(0) scaleY(1); }
+  100% { transform: translateY(4px) scaleY(0.92); }
+}
+
+@keyframes critterJump {
+  0%, 100% { transform: translateY(0) scale(1, 1); }
+  35% { transform: translateY(-28px) scale(0.9, 1.15); }
+  70% { transform: translateY(0) scale(1.15, 0.85); }
+}
+
+/* 小動物對話泡泡 (Speech Bubble) */
+.critter-bubble {
+  position: absolute;
+  top: -38px;
+  left: 50%;
+  transform: translateX(-50%) scale(0);
+  background: #ffffff;
+  color: #4a4e69;
+  font-size: 0.85rem;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 16px;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+  border: 2px solid var(--primary-accent);
+  pointer-events: none;
+  animation: popBubble 1.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  z-index: 20;
+}
+
+.critter-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 6px 0;
+  border-style: solid;
+  border-color: var(--primary-accent) transparent transparent;
+}
+
+@keyframes popBubble {
+  0% { transform: translateX(-50%) scale(0); opacity: 0; }
+  20% { transform: translateX(-50%) scale(1.1); opacity: 1; }
+  30% { transform: translateX(-50%) scale(1); }
+  80% { transform: translateX(-50%) scale(1); opacity: 1; }
+  100% { transform: translateX(-50%) translateY(-15px) scale(0.8); opacity: 0; }
+}
+
+/* 愛心飄出特效 (Heart float when pet) */
+.floating-heart {
+  position: absolute;
+  pointer-events: none;
+  font-size: 1.5rem;
+  animation: floatUpFade 1.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  z-index: 25;
+}
+
+@keyframes floatUpFade {
+  0% { transform: translateY(0) scale(0.5); opacity: 1; }
+  50% { transform: translateY(-35px) scale(1.3); opacity: 0.9; }
+  100% { transform: translateY(-70px) scale(1.6); opacity: 0; }
+}
+
+/* 食物掉落層 */
+.treats-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9;
+}
+
+.treat-item {
+  position: absolute;
+  font-size: 2rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  animation: treatDrop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes treatDrop {
+  0% { transform: translateY(-100px) rotate(0deg); opacity: 0; }
+  70% { transform: translateY(0) rotate(15deg); opacity: 1; }
+  85% { transform: translateY(-10px) rotate(-10deg); }
+  100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+}
+
+/* ==========================================================================
+   超可愛底部互動操作欄 (Kawaii Action Dock)
+   ========================================================================== */
+.kawaii-dock {
+  position: fixed;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--dock-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid var(--dock-border);
+  border-radius: 50px;
+  padding: 8px 14px;
+  box-shadow: var(--dock-shadow);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 100;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.dock-btn {
+  background: #ffffff;
+  border: 2px solid #ffd6e0;
+  border-radius: 40px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text-main);
+  box-shadow: 0 4px 0 #ffccd5, 0 6px 14px rgba(255, 112, 166, 0.2);
+  transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+  outline: none;
+}
+
+.dock-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 0 #ffccd5, 0 10px 18px rgba(255, 112, 166, 0.3);
+  border-color: var(--primary-accent);
+}
+
+.dock-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #ffccd5, 0 3px 6px rgba(255, 112, 166, 0.2);
+}
+
+.btn-icon {
+  font-size: 1.25rem;
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.dock-btn:hover .btn-icon {
+  transform: scale(1.25) rotate(10deg);
+}
+
+/* 個別按鈕色彩調度 */
+.btn-feed {
+  background: #fff9e6;
+  border-color: #ffe8a1;
+  box-shadow: 0 4px 0 #ffd166, 0 6px 14px rgba(255, 209, 102, 0.25);
+}
+.btn-feed:hover {
+  box-shadow: 0 7px 0 #ffd166, 0 10px 18px rgba(255, 209, 102, 0.35);
+}
+
+.btn-petals {
+  background: #fff0f5;
+  border-color: #ffccd5;
+}
+
+.btn-summon {
+  background: #e8f8f5;
+  border-color: #b7efc5;
+  box-shadow: 0 4px 0 #70e000, 0 6px 14px rgba(112, 224, 0, 0.2);
+}
+.btn-summon:hover {
+  box-shadow: 0 7px 0 #70e000, 0 10px 18px rgba(112, 224, 0, 0.3);
+}
+
+.btn-theme {
+  background: #f0f3ff;
+  border-color: #d7e3fc;
+  box-shadow: 0 4px 0 #abc4ff, 0 6px 14px rgba(171, 196, 255, 0.25);
+}
+.btn-theme:hover {
+  box-shadow: 0 7px 0 #abc4ff, 0 10px 18px rgba(171, 196, 255, 0.35);
+}
+
+.btn-sound {
+  background: #fff5eb;
+  border-color: #fed9b7;
+  box-shadow: 0 4px 0 #f07167, 0 6px 14px rgba(240, 113, 103, 0.2);
+}
+.btn-sound:hover {
+  box-shadow: 0 7px 0 #f07167, 0 10px 18px rgba(240, 113, 103, 0.3);
+}
+
+/* ==========================================================================
+   可愛改名彈窗 (Kawaii Modal)
+   ========================================================================== */
+.kawaii-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(40, 30, 60, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.kawaii-modal-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.kawaii-modal-card {
+  background: #ffffff;
+  border: 3px solid #ffccd5;
+  border-radius: 32px;
+  width: min(90vw, 420px);
+  padding: 28px 24px;
+  box-shadow: 0 20px 50px rgba(160, 90, 140, 0.3);
+  text-align: center;
+  transform: scale(0.85) translateY(20px);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.kawaii-modal-overlay.active .kawaii-modal-card {
+  transform: scale(1) translateY(0);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.modal-title-icon {
+  font-size: 1.5rem;
+}
+
+.modal-header h3 {
+  font-size: 1.35rem;
+  color: #3d344d;
+  font-weight: 900;
+}
+
+.modal-desc {
+  font-size: 0.95rem;
+  color: #7d758d;
+  margin-bottom: 20px;
+}
+
+.modal-input-wrap {
+  margin-bottom: 24px;
+}
+
+.modal-input-wrap input {
+  width: 100%;
+  padding: 12px 18px;
+  border: 2px solid #ffccd5;
+  border-radius: 20px;
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #4a4e69;
+  text-align: center;
+  outline: none;
+  background: #fff8fa;
+  transition: all 0.25s ease;
+}
+
+.modal-input-wrap input:focus {
+  border-color: var(--primary-accent);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(255, 112, 166, 0.2);
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.modal-btn {
+  padding: 10px 22px;
+  border-radius: 25px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 800;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.modal-btn.btn-cancel {
+  background: #f0f0f5;
+  color: #7d758d;
+}
+.modal-btn.btn-cancel:hover {
+  background: #e2e2ea;
+}
+
+.modal-btn.btn-save {
+  background: var(--primary-accent);
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(255, 112, 166, 0.4);
+}
+.modal-btn.btn-save:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(255, 112, 166, 0.5);
+}
+
+/* ==========================================================================
+   全螢幕粒子 Canvas
+   ========================================================================== */
+#particleCanvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 90;
+}
+
+/* ==========================================================================
+   響應式適配 (Responsive adjustments)
+   ========================================================================== */
+@media (max-width: 640px) {
+  .kawaii-card {
+    padding: 24px 18px 20px;
+    border-radius: 28px;
+  }
+  .time-segments {
+    font-size: 2.8rem;
+  }
+  .separator-heart {
+    font-size: 1.8rem;
+  }
+  .user-badge {
+    font-size: 0.95rem;
+    padding: 6px 14px;
+  }
+  .badge-name {
+    font-size: 1.05rem;
+  }
+  .kawaii-dock {
+    width: 95vw;
+    overflow-x: auto;
+    padding: 8px 10px;
+    justify-content: flex-start;
+    border-radius: 30px;
+    scrollbar-width: none;
+  }
+  .kawaii-dock::-webkit-scrollbar {
+    display: none;
+  }
+  .dock-btn {
+    padding: 7px 12px;
+    font-size: 0.82rem;
+    flex-shrink: 0;
+  }
+}
