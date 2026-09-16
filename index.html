@@ -43,17 +43,12 @@
         <div class="ear ear-right"></div>
       </div>
 
-      <!-- 名字標籤與編輯按鈕 -->
+      <!-- 名字標籤 (固定顯示：江晏瑋) -->
       <div class="user-badge-container">
-        <div class="user-badge" id="nameDisplayBtn" role="button" tabindex="0" title="點擊自訂名字">
+        <div class="user-badge" id="nameDisplayBadge">
           <span class="badge-sparkle">✨</span>
-          <span class="badge-name" id="userNameText">可愛的小主人</span>
+          <span class="badge-name" id="userNameText">江晏瑋</span>
           <span class="badge-tag">的元氣小天地</span>
-          <button class="edit-name-btn" id="editNameBtn" aria-label="修改名字" title="修改專屬暱稱">
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
-              <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-            </svg>
-          </button>
         </div>
       </div>
 
@@ -176,23 +171,7 @@
     </button>
   </nav>
 
-  <!-- 修改名字的可愛彈窗 Modal -->
-  <div class="kawaii-modal-overlay" id="nameModal">
-    <div class="kawaii-modal-card">
-      <div class="modal-header">
-        <span class="modal-title-icon">🎀</span>
-        <h3>幫你的小天地取個可愛名字</h3>
-      </div>
-      <p class="modal-desc">輸入你希望顯示在首頁的暱稱或名字：</p>
-      <div class="modal-input-wrap">
-        <input type="text" id="nameInput" maxlength="15" placeholder="例如：兔兔、小明、肉圓..." autocomplete="off">
-      </div>
-      <div class="modal-actions">
-        <button class="modal-btn btn-cancel" id="cancelNameBtn">取消</button>
-        <button class="modal-btn btn-save" id="saveNameBtn">儲存名字 ✨</button>
-      </div>
-    </div>
-  </div>
+
 
   <!-- 可愛手帳記事本彈窗 (Kawaii Notepad Modal) -->
   <div class="kawaii-modal-overlay" id="notepadModal">

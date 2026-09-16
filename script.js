@@ -203,62 +203,12 @@ document.addEventListener('DOMContentLoaded', () => {
   updateClock();
 
   // ========================================================================
-  // 3. 使用者名字管理模組 (User Name Customization)
+  // 3. 專屬名牌 (User Name Badge - 固定顯示：江晏瑋)
   // ========================================================================
   const userNameText = document.getElementById('userNameText');
-  const nameDisplayBtn = document.getElementById('nameDisplayBtn');
-  const editNameBtn = document.getElementById('editNameBtn');
-  const nameModal = document.getElementById('nameModal');
-  const nameInput = document.getElementById('nameInput');
-  const cancelNameBtn = document.getElementById('cancelNameBtn');
-  const saveNameBtn = document.getElementById('saveNameBtn');
-
-  const STORAGE_KEY_NAME = 'kawaii_user_name_010';
-  const savedName = localStorage.getItem(STORAGE_KEY_NAME);
-  if (savedName && savedName.trim()) {
-    userNameText.textContent = savedName.trim();
-  } else {
-    userNameText.textContent = '親愛的主人';
+  if (userNameText) {
+    userNameText.textContent = '江晏瑋';
   }
-
-  function openNameModal() {
-    audio.playPop();
-    nameInput.value = userNameText.textContent;
-    nameModal.classList.add('active');
-    setTimeout(() => nameInput.focus(), 150);
-  }
-
-  function closeNameModal() {
-    nameModal.classList.remove('active');
-  }
-
-  function saveNewName() {
-    const trimmed = nameInput.value.trim();
-    if (trimmed) {
-      userNameText.textContent = trimmed;
-      localStorage.setItem(STORAGE_KEY_NAME, trimmed);
-    }
-    audio.playPet();
-    closeNameModal();
-    spawnHeartBurst(window.innerWidth / 2, window.innerHeight / 2);
-  }
-
-  nameDisplayBtn.addEventListener('click', openNameModal);
-  editNameBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    openNameModal();
-  });
-  cancelNameBtn.addEventListener('click', closeNameModal);
-  saveNameBtn.addEventListener('click', saveNewName);
-
-  nameInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') saveNewName();
-    if (e.key === 'Escape') closeNameModal();
-  });
-
-  nameModal.addEventListener('click', (e) => {
-    if (e.target === nameModal) closeNameModal();
-  });
 
   // ========================================================================
   // 4. 動態生成背景微星與氣泡 (Floating Sparkles)
