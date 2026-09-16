@@ -100,7 +100,9 @@ body {
   font-family: 'Zen Maru Gothic', 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   min-height: 100vh;
   width: 100vw;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-behavior: smooth;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -298,12 +300,13 @@ body.theme-night .moon-crater {
   position: relative;
   z-index: 10;
   width: 100%;
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding-top: clamp(24px, 4.5vh, 48px);
+  padding-top: clamp(20px, 3.5vh, 40px);
+  padding-bottom: 120px;
+  gap: 32px;
   pointer-events: none;
 }
 
@@ -909,11 +912,11 @@ body.theme-night .home-todo-checkbox {
    底部地景草坡與小動物樂園 (Critter Playground)
    ========================================================================= */
 .critter-playground {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: clamp(200px, 32vh, 320px);
+  height: clamp(190px, 28vh, 280px);
   z-index: 5;
   overflow: visible;
   pointer-events: none;
@@ -1819,4 +1822,367 @@ body.theme-night .home-todo-checkbox {
   .home-todo-text {
     font-size: 0.82rem;
   }
+  .mini-game-card {
+    padding: 20px 14px 16px;
+  }
+  .game-stats-bar {
+    gap: 4px;
+  }
+  .game-stat {
+    padding: 4px 6px;
+  }
+  .stat-label {
+    font-size: 0.68rem;
+  }
+  .stat-val {
+    font-size: 0.85rem;
+  }
+  .game-touch-controls {
+    display: flex;
+  }
+  .char-chip {
+    padding: 4px 10px;
+    font-size: 0.78rem;
+  }
+}
+
+/* ==========================================================================
+   萌寵接甜點大冒險小遊戲 (Kawaii Mini Game Styles)
+   ========================================================================== */
+.mini-game-card {
+  width: min(92vw, 540px);
+  padding: 24px 22px 20px;
+  scroll-margin-top: 24px;
+}
+
+.game-ears .ear {
+  background: var(--card-bg);
+  height: 32px;
+  border-radius: 16px 16px 0 0;
+}
+
+.game-header {
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+.game-title-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.game-title-icon {
+  font-size: 1.8rem;
+  animation: gentleBob 2s ease-in-out infinite alternate;
+}
+
+.game-title {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: var(--text-main);
+}
+
+.game-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  display: block;
+  margin-top: 2px;
+}
+
+/* 角色切換列 */
+.game-char-select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.char-select-label {
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: var(--text-muted);
+}
+
+.char-chips {
+  display: flex;
+  gap: 6px;
+}
+
+.char-chip {
+  background: #ffffff;
+  border: 1.5px solid #ffccd5;
+  padding: 5px 12px;
+  border-radius: 18px;
+  font-family: inherit;
+  font-size: 0.84rem;
+  font-weight: 800;
+  color: var(--text-main);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 2px 6px rgba(255, 112, 166, 0.1);
+}
+
+.char-chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary-accent);
+}
+
+.char-chip.active {
+  background: var(--primary-accent);
+  color: #fff;
+  border-color: var(--primary-accent);
+  box-shadow: 0 3px 10px rgba(255, 112, 166, 0.35);
+}
+
+body.theme-night .char-chip {
+  background: rgba(45, 42, 74, 0.9);
+  border-color: rgba(140, 120, 190, 0.4);
+  color: #fff;
+}
+body.theme-night .char-chip.active {
+  background: var(--primary-accent);
+  color: #1f2041;
+}
+
+/* 即時數據面板 */
+.game-stats-bar {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.game-stat {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1.5px solid rgba(255, 204, 213, 0.6);
+  border-radius: 16px;
+  padding: 6px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(255, 112, 166, 0.08);
+}
+
+body.theme-night .game-stat {
+  background: rgba(45, 42, 74, 0.7);
+  border-color: rgba(140, 120, 190, 0.35);
+}
+
+.stat-label {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--text-muted);
+}
+
+.stat-val {
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--primary-accent);
+  line-height: 1.2;
+}
+
+/* 遊戲畫布舞台 */
+.game-canvas-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(255, 112, 166, 0.2);
+  border: 2px solid rgba(255, 204, 213, 0.8);
+  background: #fdf7f9;
+}
+
+#gameCanvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 460 / 320;
+  background: linear-gradient(180deg, #d8f3dc 0%, #b7e4c7 70%, #95d5b2 100%);
+  cursor: grab;
+}
+
+#gameCanvas:active {
+  cursor: grabbing;
+}
+
+body.theme-sunset #gameCanvas {
+  background: linear-gradient(180deg, #ffd6a5 0%, #ffadad 70%, #fdffb6 100%);
+}
+
+body.theme-night #gameCanvas {
+  background: linear-gradient(180deg, #1b263b 0%, #0d1b2a 70%, #2b2d42 100%);
+}
+
+/* 遊戲浮層遮罩 (Start / Over) */
+.game-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 245, 248, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+  padding: 16px;
+}
+
+body.theme-night .game-overlay {
+  background: rgba(22, 20, 42, 0.88);
+}
+
+.game-overlay.hidden {
+  display: none !important;
+}
+
+.overlay-modal {
+  background: #ffffff;
+  border: 2px solid #ffd6e0;
+  border-radius: 24px;
+  padding: 20px 24px 18px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(255, 112, 166, 0.25);
+  animation: cardEnter 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  max-width: 340px;
+}
+
+body.theme-night .overlay-modal {
+  background: #2b274a;
+  border-color: #5c4f82;
+  color: #fff;
+}
+
+.overlay-emoji {
+  font-size: 2.4rem;
+  display: inline-block;
+  margin-bottom: 6px;
+  animation: gentleBob 2s ease-in-out infinite alternate;
+}
+
+.overlay-modal h3 {
+  font-size: 1.25rem;
+  font-weight: 900;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+
+body.theme-night .overlay-modal h3 {
+  color: #fff;
+}
+
+.overlay-modal p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  line-height: 1.5;
+  margin-bottom: 14px;
+}
+
+.highlight-score {
+  color: var(--primary-accent);
+  font-size: 1.3rem;
+  font-weight: 900;
+}
+
+.medal-badge {
+  background: #fff0f5;
+  color: var(--primary-accent);
+  border: 1.5px solid #ffccd5;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  font-weight: 800;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+body.theme-night .medal-badge {
+  background: #3b3558;
+  border-color: #6a5d91;
+  color: #ffd166;
+}
+
+.game-btn {
+  background: var(--primary-accent);
+  color: #ffffff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 25px;
+  font-family: inherit;
+  font-size: 0.96rem;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(255, 112, 166, 0.35);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.game-btn:hover {
+  transform: scale(1.06);
+  box-shadow: 0 6px 18px rgba(255, 112, 166, 0.45);
+}
+
+/* 手機虛擬控制器 */
+.game-touch-controls {
+  display: none;
+  width: 100%;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.touch-ctrl-btn {
+  flex: 1;
+  padding: 10px 14px;
+  background: #ffffff;
+  border: 2px solid #ffccd5;
+  border-radius: 18px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  font-weight: 900;
+  color: var(--text-main);
+  box-shadow: 0 3px 8px rgba(255, 112, 166, 0.15);
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.touch-ctrl-btn:active {
+  background: var(--primary-accent);
+  color: #fff;
+  transform: scale(0.96);
+}
+
+/* 提示與標籤 */
+.game-footer-tips {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+/* Dock 玩小遊戲按鈕專屬小紅點 */
+.btn-game {
+  position: relative;
+}
+
+.game-badge-new {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background: #ff477e;
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 900;
+  padding: 1px 5px;
+  border-radius: 10px;
+  border: 1.5px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(255, 71, 126, 0.4);
+  animation: hintPulse 2s infinite ease-in-out;
 }

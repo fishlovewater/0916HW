@@ -1136,4 +1136,422 @@ document.addEventListener('DOMContentLoaded', () => {
       }, 450);
     });
   }
+
+  // ========================================================================
+  // 11. 萌寵接甜點大冒險小遊戲模組 (Kawaii Treat Catcher Mini Game)
+  // ========================================================================
+  const btnGame = document.getElementById('btnGame');
+  const miniGameCard = document.getElementById('miniGameCard');
+
+  if (btnGame && miniGameCard) {
+    btnGame.addEventListener('click', () => {
+      audio.playPop();
+      miniGameCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  }
+
+  const gameCanvas = document.getElementById('gameCanvas');
+  const gameStartOverlay = document.getElementById('gameStartOverlay');
+  const gameOverOverlay = document.getElementById('gameOverOverlay');
+  const btnStartGame = document.getElementById('btnStartGame');
+  const btnRestartGame = document.getElementById('btnRestartGame');
+
+  const gameScoreVal = document.getElementById('gameScoreVal');
+  const gameBestVal = document.getElementById('gameBestVal');
+  const gameComboVal = document.getElementById('gameComboVal');
+  const gameLivesVal = document.getElementById('gameLivesVal');
+
+  const gameOverScore = document.getElementById('gameOverScore');
+  const gameOverMedal = document.getElementById('gameOverMedal');
+  const gameOverEmoji = document.getElementById('gameOverEmoji');
+  const gameOverTitle = document.getElementById('gameOverTitle');
+  const gameCharChips = document.getElementById('gameCharChips');
+
+  const btnTouchLeft = document.getElementById('btnTouchLeft');
+  const btnTouchRight = document.getElementById('btnTouchRight');
+
+  if (gameCanvas) {
+    const gCtx = gameCanvas.getContext('2d');
+    const STORAGE_KEY_BEST = 'kawaii_game_best_010';
+
+    let bestScore = parseInt(localStorage.getItem(STORAGE_KEY_BEST) || '0', 10);
+    if (gameBestVal) gameBestVal.textContent = bestScore;
+
+    let isPlaying = false;
+    let score = 0;
+    let combo = 0;
+    let lives = 3;
+    let selectedChar = 'sheep';
+
+    // 角色設定
+    const CHARACTERS = {
+      sheep: { name: '小羊', emoji: '🐑', bonusItem: '🌱', bonusName: '嫩草' },
+      cat: { name: '小貓咪', emoji: '🐱', bonusItem: '🐟', bonusName: '小魚乾' },
+      bunny: { name: '小兔子', emoji: '🐰', bonusItem: '🥕', bonusName: '胡蘿蔔' }
+    };
+
+    // 角色切換監聽
+    if (gameCharChips) {
+      gameCharChips.addEventListener('click', (e) => {
+        const chip = e.target.closest('.char-chip');
+        if (!chip) return;
+        audio.playPop();
+        gameCharChips.querySelectorAll('.char-chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        selectedChar = chip.dataset.char || 'sheep';
+      });
+    }
+
+    // 玩家位置
+    let playerX = gameCanvas.width / 2;
+    const playerY = gameCanvas.height - 40;
+    const playerRadius = 26;
+    let playerTargetX = playerX;
+
+    // 按鍵狀態
+    const keys = { left: false, right: false };
+
+    window.addEventListener('keydown', (e) => {
+      if (!isPlaying) return;
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = true;
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = true;
+    });
+
+    window.addEventListener('keyup', (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = false;
+      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = false;
+    });
+
+    // 觸控按鈕
+    if (btnTouchLeft && btnTouchRight) {
+      const setLeft = (val) => { if (isPlaying) keys.left = val; };
+      const setRight = (val) => { if (isPlaying) keys.right = val; };
+
+      btnTouchLeft.addEventListener('mousedown', () => setLeft(true));
+      btnTouchLeft.addEventListener('mouseup', () => setLeft(false));
+      btnTouchLeft.addEventListener('touchstart', (e) => { e.preventDefault(); setLeft(true); }, { passive: false });
+      btnTouchLeft.addEventListener('touchend', () => setLeft(false));
+
+      btnTouchRight.addEventListener('mousedown', () => setRight(true));
+      btnTouchRight.addEventListener('mouseup', () => setRight(false));
+      btnTouchRight.addEventListener('touchstart', (e) => { e.preventDefault(); setRight(true); }, { passive: false });
+      btnTouchRight.addEventListener('touchend', () => setRight(false));
+    }
+
+    // 滑鼠與觸控直接拖曳
+    function handlePointerMove(clientX) {
+      if (!isPlaying) return;
+      const rect = gameCanvas.getBoundingClientRect();
+      const scaleX = gameCanvas.width / rect.width;
+      const canvasX = (clientX - rect.left) * scaleX;
+      playerTargetX = Math.max(playerRadius, Math.min(gameCanvas.width - playerRadius, canvasX));
+    }
+
+    gameCanvas.addEventListener('mousemove', (e) => {
+      handlePointerMove(e.clientX);
+    });
+
+    gameCanvas.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        handlePointerMove(e.touches[0].clientX);
+      }
+    }, { passive: true });
+
+    // 掉落物品列表
+    let items = [];
+    let floatingTexts = [];
+    let gameParticles = [];
+    let spawnCounter = 0;
+    let animFrameId = null;
+
+    // 物品種類定義
+    const ITEM_TYPES = [
+      { emoji: '🍓', points: 10, type: 'food' },
+      { emoji: '🍪', points: 15, type: 'food' },
+      { emoji: '🍰', points: 25, type: 'food' },
+      { emoji: '⭐', points: 50, type: 'star' },
+      { emoji: '🌱', points: 15, type: 'sheep_fav' },
+      { emoji: '🐟', points: 15, type: 'cat_fav' },
+      { emoji: '🥕', points: 15, type: 'bunny_fav' },
+      { emoji: '⛈️', points: 0, type: 'hazard' }
+    ];
+
+    function spawnItem() {
+      const rand = Math.random();
+      let chosen;
+      if (rand < 0.18) {
+        // 專屬最愛食物加權
+        const fav = CHARACTERS[selectedChar].bonusItem;
+        chosen = ITEM_TYPES.find(i => i.emoji === fav) || ITEM_TYPES[0];
+      } else if (rand < 0.35) {
+        chosen = ITEM_TYPES[7]; // 烏雲
+      } else if (rand < 0.45) {
+        chosen = ITEM_TYPES[3]; // ⭐
+      } else {
+        const foodIdx = Math.floor(Math.random() * 3);
+        chosen = ITEM_TYPES[foodIdx];
+      }
+
+      items.push({
+        x: Math.random() * (gameCanvas.width - 60) + 30,
+        y: -25,
+        speed: Math.random() * 1.5 + 2.0 + Math.min(score / 250, 3.5),
+        emoji: chosen.emoji,
+        type: chosen.type,
+        points: chosen.points,
+        size: 28,
+        rotation: 0,
+        rotSpeed: (Math.random() - 0.5) * 0.05
+      });
+    }
+
+    function addFloatingText(x, y, text, color = '#ff70a6') {
+      floatingTexts.push({ x, y, text, color, alpha: 1, vy: -1.5 });
+    }
+
+    function addGameParticles(x, y, count = 8, emoji = '✨') {
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const spd = Math.random() * 3 + 1;
+        gameParticles.push({
+          x,
+          y,
+          vx: Math.cos(angle) * spd,
+          vy: Math.sin(angle) * spd - 1,
+          alpha: 1,
+          size: Math.random() * 8 + 8,
+          emoji
+        });
+      }
+    }
+
+    function updateHUD() {
+      if (gameScoreVal) gameScoreVal.textContent = score;
+      if (gameComboVal) gameComboVal.textContent = `x${combo}`;
+      if (gameLivesVal) {
+        gameLivesVal.textContent = '❤️'.repeat(Math.max(0, lives)) + '🖤'.repeat(Math.max(0, 3 - lives));
+      }
+    }
+
+    function startGame() {
+      audio.playChime();
+      isPlaying = true;
+      score = 0;
+      combo = 0;
+      lives = 3;
+      items = [];
+      floatingTexts = [];
+      gameParticles = [];
+      spawnCounter = 0;
+      playerX = gameCanvas.width / 2;
+      playerTargetX = playerX;
+      keys.left = false;
+      keys.right = false;
+
+      updateHUD();
+      if (gameStartOverlay) gameStartOverlay.classList.add('hidden');
+      if (gameOverOverlay) gameOverOverlay.classList.add('hidden');
+
+      if (animFrameId) cancelAnimationFrame(animFrameId);
+      animFrameId = requestAnimationFrame(gameLoop);
+    }
+
+    function endGame() {
+      isPlaying = false;
+      audio.playPet();
+
+      // 更新最高紀錄
+      if (score > bestScore) {
+        bestScore = score;
+        localStorage.setItem(STORAGE_KEY_BEST, String(bestScore));
+        if (gameBestVal) gameBestVal.textContent = bestScore;
+        spawnPetalRain(35);
+      }
+
+      // 計算稱號與獎牌
+      let medal = '🥉 甜點實習生';
+      let emoji = '🍰';
+      if (score >= 400) {
+        medal = '👑 傳奇甜點守護神！';
+        emoji = '🏆';
+      } else if (score >= 250) {
+        medal = '🥇 甜點吃貨大師';
+        emoji = '🎉';
+      } else if (score >= 120) {
+        medal = '🥈 貪吃小行家';
+        emoji = '⭐';
+      }
+
+      if (gameOverScore) gameOverScore.textContent = score;
+      if (gameOverMedal) gameOverMedal.textContent = medal;
+      if (gameOverEmoji) gameOverEmoji.textContent = emoji;
+      if (gameOverTitle) gameOverTitle.textContent = lives <= 0 ? '愛心耗盡～挑戰結束！' : '遊戲結束！';
+
+      if (gameOverOverlay) gameOverOverlay.classList.remove('hidden');
+    }
+
+    function gameLoop() {
+      if (!isPlaying) return;
+
+      // 1. 更新玩家位置
+      if (keys.left) playerTargetX -= 6.5;
+      if (keys.right) playerTargetX += 6.5;
+      playerTargetX = Math.max(playerRadius, Math.min(gameCanvas.width - playerRadius, playerTargetX));
+      playerX += (playerTargetX - playerX) * 0.35;
+
+      // 2. 生成物品
+      spawnCounter++;
+      const spawnInterval = Math.max(26, 45 - Math.floor(score / 80));
+      if (spawnCounter % spawnInterval === 0) {
+        spawnItem();
+      }
+
+      // 3. 繪製背景
+      gCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+      // 地面草坪花紋
+      gCtx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+      gCtx.fillRect(0, gameCanvas.height - 20, gameCanvas.width, 20);
+
+      // 4. 更新與繪製掉落物
+      for (let i = items.length - 1; i >= 0; i--) {
+        const item = items[i];
+        item.y += item.speed;
+        item.rotation += item.rotSpeed;
+
+        // 繪製掉落物品 Emoji
+        gCtx.save();
+        gCtx.translate(item.x, item.y);
+        gCtx.rotate(item.rotation);
+        gCtx.font = `${item.size}px "Apple Color Emoji", "Segoe UI Emoji", sans-serif`;
+        gCtx.textAlign = 'center';
+        gCtx.textBaseline = 'middle';
+        gCtx.fillText(item.emoji, 0, 0);
+        gCtx.restore();
+
+        // 碰撞偵測 (與玩家小動物)
+        const dx = item.x - playerX;
+        const dy = item.y - (playerY - 4);
+        const dist = Math.hypot(dx, dy);
+
+        if (dist < playerRadius + 16) {
+          // 接到了！
+          if (item.type === 'hazard') {
+            // 吃到烏雲！
+            audio.playPop();
+            lives--;
+            combo = 0;
+            addFloatingText(item.x, item.y - 10, '💔 烏雲雷擊!', '#e63946');
+            addGameParticles(item.x, item.y, 8, '⚡');
+
+            if (lives <= 0) {
+              updateHUD();
+              endGame();
+              return;
+            }
+          } else {
+            // 吃到美味點心！
+            audio.playMunch();
+            combo++;
+            let pts = item.points;
+
+            // 如果是出戰角色的最愛點心，額外 +15 分
+            const favEmoji = CHARACTERS[selectedChar].bonusItem;
+            if (item.emoji === favEmoji) {
+              pts += 15;
+              addFloatingText(item.x, item.y - 15, `★ 最愛 +${pts}!`, '#ff477e');
+              addGameParticles(item.x, item.y, 10, '💖');
+            } else if (item.type === 'star') {
+              pts += 20;
+              addFloatingText(item.x, item.y - 15, `🌟 幸運 +${pts}!`, '#ffb703');
+              addGameParticles(item.x, item.y, 12, '⭐');
+            } else {
+              addFloatingText(item.x, item.y - 10, `+${pts}`, '#ff70a6');
+              addGameParticles(item.x, item.y, 6, '✨');
+            }
+
+            score += pts;
+          }
+
+          items.splice(i, 1);
+          updateHUD();
+          continue;
+        }
+
+        // 掉落地面
+        if (item.y > gameCanvas.height + 20) {
+          if (item.type !== 'hazard' && combo > 0) {
+            combo = 0; // 漏接食物連擊歸零
+            updateHUD();
+          }
+          items.splice(i, 1);
+        }
+      }
+
+      // 5. 繪製玩家小動物
+      gCtx.save();
+      gCtx.translate(playerX, playerY);
+
+      // 影子
+      gCtx.fillStyle = 'rgba(0, 0, 0, 0.12)';
+      gCtx.beginPath();
+      gCtx.ellipse(0, 16, 22, 7, 0, 0, Math.PI * 2);
+      gCtx.fill();
+
+      // 小動物頭像/精靈
+      const charData = CHARACTERS[selectedChar] || CHARACTERS.sheep;
+      gCtx.font = '38px "Apple Color Emoji", "Segoe UI Emoji", sans-serif';
+      gCtx.textAlign = 'center';
+      gCtx.textBaseline = 'middle';
+      gCtx.fillText(charData.emoji, 0, 0);
+
+      // 頂部小碗/接籃裝飾
+      gCtx.font = '16px sans-serif';
+      gCtx.fillText('🎀', 0, -22);
+
+      gCtx.restore();
+
+      // 6. 繪製浮動粒子
+      for (let i = gameParticles.length - 1; i >= 0; i--) {
+        const p = gameParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= 0.03;
+        if (p.alpha <= 0) {
+          gameParticles.splice(i, 1);
+          continue;
+        }
+        gCtx.save();
+        gCtx.globalAlpha = p.alpha;
+        gCtx.font = `${p.size}px sans-serif`;
+        gCtx.textAlign = 'center';
+        gCtx.textBaseline = 'middle';
+        gCtx.fillText(p.emoji, p.x, p.y);
+        gCtx.restore();
+      }
+
+      // 7. 繪製浮動加分文字
+      for (let i = floatingTexts.length - 1; i >= 0; i--) {
+        const ft = floatingTexts[i];
+        ft.y += ft.vy;
+        ft.alpha -= 0.025;
+        if (ft.alpha <= 0) {
+          floatingTexts.splice(i, 1);
+          continue;
+        }
+        gCtx.save();
+        gCtx.globalAlpha = ft.alpha;
+        gCtx.font = 'bold 15px "Zen Maru Gothic", sans-serif';
+        gCtx.fillStyle = ft.color;
+        gCtx.textAlign = 'center';
+        gCtx.fillText(ft.text, ft.x, ft.y);
+        gCtx.restore();
+      }
+
+      animFrameId = requestAnimationFrame(gameLoop);
+    }
+
+    if (btnStartGame) btnStartGame.addEventListener('click', startGame);
+    if (btnRestartGame) btnRestartGame.addEventListener('click', startGame);
+  }
 });

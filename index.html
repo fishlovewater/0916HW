@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=2">
+  <link rel="stylesheet" href="style.css?v=3">
 </head>
 <body class="theme-day">
   <!-- 動態夢幻背景層 -->
@@ -121,6 +121,92 @@
         <span>💡 點擊下方按鈕餵食或摸摸小動物，看看牠們的可愛反應吧！</span>
       </div>
     </div>
+
+    <!-- 下方：萌寵接甜點大冒險小遊戲 -->
+    <section class="kawaii-card glass-card mini-game-card" id="miniGameCard" aria-label="萌寵接甜點小遊戲">
+      <!-- 遊戲標題與小耳朵 -->
+      <div class="card-bunny-ears game-ears">
+        <div class="ear ear-left"></div>
+        <div class="ear ear-right"></div>
+      </div>
+
+      <div class="game-header">
+        <div class="game-title-wrap">
+          <span class="game-title-icon">🎮</span>
+          <div class="game-title-info">
+            <h2 class="game-title">萌寵接甜點大冒險</h2>
+            <span class="game-subtitle">接住掉落美味點心，避開雷雨烏雲！✨</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 角色切換列 -->
+      <div class="game-char-select">
+        <span class="char-select-label">出戰萌寵：</span>
+        <div class="char-chips" id="gameCharChips">
+          <button class="char-chip active" data-char="sheep">🐑 軟萌小羊</button>
+          <button class="char-chip" data-char="cat">🐱 元氣小貓咪</button>
+          <button class="char-chip" data-char="bunny">🐰 雪白小兔子</button>
+        </div>
+      </div>
+
+      <!-- 即時數據列 (分數、最高分、連擊、愛心生命) -->
+      <div class="game-stats-bar">
+        <div class="game-stat stat-score">
+          <span class="stat-label">⭐️ 分數</span>
+          <span class="stat-val" id="gameScoreVal">0</span>
+        </div>
+        <div class="game-stat stat-best">
+          <span class="stat-label">🏆 最高分</span>
+          <span class="stat-val" id="gameBestVal">0</span>
+        </div>
+        <div class="game-stat stat-combo">
+          <span class="stat-label">🔥 連擊</span>
+          <span class="stat-val" id="gameComboVal">x0</span>
+        </div>
+        <div class="game-stat stat-lives">
+          <span class="stat-label">❤️ 生命</span>
+          <span class="stat-val" id="gameLivesVal">❤️❤️❤️</span>
+        </div>
+      </div>
+
+      <!-- 遊戲畫布舞台容器 -->
+      <div class="game-canvas-wrap" id="gameCanvasWrap">
+        <canvas id="gameCanvas" width="460" height="320"></canvas>
+
+        <!-- 遊戲開始前的遮罩提示 -->
+        <div class="game-overlay" id="gameStartOverlay">
+          <div class="overlay-modal">
+            <span class="overlay-emoji">🧁</span>
+            <h3>準備好接甜點了嗎？</h3>
+            <p>滑鼠滑動 / 觸控拖曳 / 鍵盤 ⬅️ ➡️ 控制左右移動<br>接住點心得分，小心烏雲 ⛈️ 會扣愛心喔！</p>
+            <button class="game-btn btn-play" id="btnStartGame">▶️ 開始挑戰</button>
+          </div>
+        </div>
+
+        <!-- 遊戲結束遮罩 -->
+        <div class="game-overlay hidden" id="gameOverOverlay">
+          <div class="overlay-modal">
+            <span class="overlay-emoji" id="gameOverEmoji">🎉</span>
+            <h3 id="gameOverTitle">挑戰結束！</h3>
+            <p id="gameOverSummary">本局獲得 <span class="highlight-score" id="gameOverScore">0</span> 分！</p>
+            <div class="medal-badge" id="gameOverMedal">🥇 甜點吃貨大師</div>
+            <button class="game-btn btn-play" id="btnRestartGame">🔄 再玩一次</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 手機端虛擬控制器按鈕 -->
+      <div class="game-touch-controls">
+        <button class="touch-ctrl-btn" id="btnTouchLeft">◀ 往左移</button>
+        <button class="touch-ctrl-btn" id="btnTouchRight">往右移 ▶</button>
+      </div>
+
+      <!-- 操作提示小標籤 -->
+      <div class="game-footer-tips">
+        <span>💡 電腦可用鍵盤 <b>A / D</b> 或 <b>← / →</b> 方向鍵，手機可直接在畫布上左右滑動！</span>
+      </div>
+    </section>
   </main>
 
   <!-- 底部小動物漫步樂園與地景草坡 -->
@@ -160,6 +246,11 @@
     <button class="dock-btn btn-summon" id="btnSummon" title="召喚一隻新的可愛小夥伴">
       <span class="btn-icon">🐾</span>
       <span class="btn-label">召喚萌寵</span>
+    </button>
+    <button class="dock-btn btn-game" id="btnGame" title="前往下方玩萌寵接甜點小遊戲">
+      <span class="btn-icon">🎮</span>
+      <span class="btn-label">玩小遊戲</span>
+      <span class="game-badge-new">NEW</span>
     </button>
     <button class="dock-btn btn-theme" id="btnTheme" title="切換白天、黃昏或星夜">
       <span class="btn-icon" id="themeIcon">☀️</span>
@@ -246,6 +337,6 @@
   <!-- 粒子特效畫布 (撒花、愛心、煙火) -->
   <canvas id="particleCanvas"></canvas>
 
-  <script src="script.js?v=2"></script>
+  <script src="script.js?v=3"></script>
 </body>
 </html>
