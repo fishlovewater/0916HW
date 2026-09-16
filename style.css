@@ -2186,3 +2186,231 @@ body.theme-night .medal-badge {
   box-shadow: 0 2px 6px rgba(255, 71, 126, 0.4);
   animation: hintPulse 2s infinite ease-in-out;
 }
+
+/* ==========================================================================
+   🥁 太鼓音遊 (Taiko Rhythm Game)
+   ========================================================================== */
+
+.rhythm-game-card {
+  margin-top: 28px;
+  width: min(96vw, 620px);
+  padding: 28px 24px 22px;
+}
+
+/* 曲目 & 難度選擇列 */
+.rhythm-selectors {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 14px 0;
+}
+.rhythm-selector-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.rhythm-select-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.rhythm-song-chips,
+.rhythm-diff-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.rhythm-chip,
+.rhythm-diff-chip {
+  padding: 5px 13px;
+  border-radius: 20px;
+  border: 2px solid var(--badge-border);
+  background: var(--badge-bg);
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.rhythm-chip:hover,
+.rhythm-diff-chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--primary-accent);
+  box-shadow: 0 4px 12px rgba(255, 112, 166, 0.25);
+}
+.rhythm-chip.active,
+.rhythm-diff-chip.active {
+  background: var(--primary-accent);
+  border-color: var(--primary-accent);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(255, 112, 166, 0.45);
+}
+
+/* 分數欄 */
+.rhythm-stats-bar {
+  margin: 10px 0 14px;
+}
+
+/* 畫布包裹層 */
+.rhythm-canvas-wrap {
+  position: relative;
+  width: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  background: linear-gradient(160deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  box-shadow:
+    0 0 0 3px rgba(255,112,166,0.3),
+    0 8px 32px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+}
+#rhythmCanvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+}
+
+/* 按鍵提示浮層 */
+.rhythm-key-hints {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  display: flex;
+  gap: 8px;
+  pointer-events: none;
+  z-index: 5;
+}
+.key-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  opacity: 0.85;
+}
+.key-cap {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  font-weight: 900;
+  color: #fff;
+  border: 2px solid rgba(255,255,255,0.25);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15);
+}
+.key-d .key-cap {
+  background: linear-gradient(135deg, #ff4d6d, #c9184a);
+}
+.key-f .key-cap {
+  background: linear-gradient(135deg, #4ea8de, #1a6fad);
+}
+.key-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.7);
+  white-space: nowrap;
+}
+
+/* 按鍵按下動畫 */
+.key-hint.pressed .key-cap {
+  transform: scale(0.88);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.4), inset 0 2px 6px rgba(0,0,0,0.3);
+}
+
+/* 判定文字浮現 */
+.rhythm-judge-display {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 10;
+  font-size: 1.5rem;
+  font-weight: 900;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+}
+.judge-text {
+  position: absolute;
+  white-space: nowrap;
+  animation: judgeFloat 0.8s ease forwards;
+  transform: translateX(-50%);
+}
+@keyframes judgeFloat {
+  0%   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1.2); }
+  60%  { opacity: 1; transform: translateX(-50%) translateY(-20px) scale(1); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-38px) scale(0.9); }
+}
+
+/* 手機觸控按鈕 */
+.rhythm-touch-controls {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  margin-top: 16px;
+}
+.rhythm-touch-btn {
+  flex: 1;
+  max-width: 200px;
+  padding: 14px 10px;
+  border-radius: 18px;
+  border: 3px solid transparent;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.12s ease;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+  active-scale: 0.95;
+}
+.rhythm-touch-btn .drum-icon {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+.rhythm-touch-btn.red-drum {
+  background: linear-gradient(135deg, #ff6b8a, #e63963);
+  border-color: #ff4d6d;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+.rhythm-touch-btn.blue-drum {
+  background: linear-gradient(135deg, #6ab8e8, #2176ae);
+  border-color: #4ea8de;
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+.rhythm-touch-btn:active,
+.rhythm-touch-btn.pressing {
+  transform: scale(0.92);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+/* Dock 音遊按鈕 */
+.btn-rhythm {
+  background: linear-gradient(135deg, rgba(255,160,80,0.15), rgba(255,80,130,0.1));
+}
+.btn-rhythm:hover {
+  background: linear-gradient(135deg, rgba(255,160,80,0.35), rgba(255,80,130,0.25));
+  transform: translateY(-6px) scale(1.08);
+}
+
+/* 響應式 */
+@media (max-width: 600px) {
+  .rhythm-game-card {
+    padding: 18px 12px 16px;
+  }
+  .rhythm-selector-group {
+    gap: 6px;
+  }
+  .rhythm-touch-btn {
+    padding: 12px 8px;
+  }
+}

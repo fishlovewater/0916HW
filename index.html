@@ -207,6 +207,128 @@
         <span>💡 電腦可用鍵盤 <b>A / D</b> 或 <b>← / →</b> 方向鍵，手機可直接在畫布上左右滑動！</span>
       </div>
     </section>
+
+    <!-- 🥁 太鼓音遊卡片 -->
+    <section class="kawaii-card glass-card rhythm-game-card" id="rhythmGameCard" aria-label="太鼓達人音遊">
+      <!-- 小耳朵 -->
+      <div class="card-bunny-ears game-ears">
+        <div class="ear ear-left"></div>
+        <div class="ear ear-right"></div>
+      </div>
+
+      <!-- 音遊標題列 -->
+      <div class="game-header">
+        <div class="game-title-wrap">
+          <span class="game-title-icon">🥁</span>
+          <div class="game-title-info">
+            <h2 class="game-title">萌寵太鼓音遊</h2>
+            <span class="game-subtitle">跟著節拍按 D / F 敲擊太鼓，挑戰連擊高分！🎵</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 難度與曲目選擇 -->
+      <div class="rhythm-selectors">
+        <div class="rhythm-selector-group">
+          <span class="rhythm-select-label">🎼 選擇曲目：</span>
+          <div class="rhythm-song-chips" id="rhythmSongChips">
+            <button class="rhythm-chip active" data-song="sakura">🌸 春日搖籃</button>
+            <button class="rhythm-chip" data-song="star">⭐ 星光閃閃</button>
+            <button class="rhythm-chip" data-song="candy">🍬 糖果進行曲</button>
+          </div>
+        </div>
+        <div class="rhythm-selector-group">
+          <span class="rhythm-select-label">💪 難度：</span>
+          <div class="rhythm-diff-chips" id="rhythmDiffChips">
+            <button class="rhythm-diff-chip active" data-diff="easy">🍀 簡單</button>
+            <button class="rhythm-diff-chip" data-diff="normal">🌟 普通</button>
+            <button class="rhythm-diff-chip" data-diff="hard">🔥 困難</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 即時分數列 -->
+      <div class="game-stats-bar rhythm-stats-bar">
+        <div class="game-stat">
+          <span class="stat-label">⭐️ 分數</span>
+          <span class="stat-val" id="rhythmScoreVal">0</span>
+        </div>
+        <div class="game-stat">
+          <span class="stat-label">🏆 最高分</span>
+          <span class="stat-val" id="rhythmBestVal">0</span>
+        </div>
+        <div class="game-stat">
+          <span class="stat-label">🔥 連擊</span>
+          <span class="stat-val" id="rhythmComboVal">x0</span>
+        </div>
+        <div class="game-stat">
+          <span class="stat-label">🎯 準確率</span>
+          <span class="stat-val" id="rhythmAccVal">100%</span>
+        </div>
+      </div>
+
+      <!-- 太鼓音遊畫布容器 -->
+      <div class="rhythm-canvas-wrap" id="rhythmCanvasWrap">
+        <canvas id="rhythmCanvas" width="560" height="200"></canvas>
+
+        <!-- 按鍵提示 -->
+        <div class="rhythm-key-hints" id="rhythmKeyHints">
+          <div class="key-hint key-d" id="rhythmKeyD">
+            <div class="key-cap">D</div>
+            <div class="key-label">紅鼓 🔴</div>
+          </div>
+          <div class="key-hint key-f" id="rhythmKeyF">
+            <div class="key-cap">F</div>
+            <div class="key-label">藍鼓 🔵</div>
+          </div>
+        </div>
+
+        <!-- 判定文字浮現層 -->
+        <div class="rhythm-judge-display" id="rhythmJudgeDisplay"></div>
+
+        <!-- 開始遮罩 -->
+        <div class="game-overlay" id="rhythmStartOverlay">
+          <div class="overlay-modal">
+            <span class="overlay-emoji">🥁</span>
+            <h3>萌寵太鼓音遊</h3>
+            <p>
+              按 <b>D 鍵</b> 敲擊 <span style="color:#ff4d6d">🔴 紅鼓</span>，<br>
+              按 <b>F 鍵</b> 敲擊 <span style="color:#4ea8de">🔵 藍鼓</span>！<br>
+              <small>手機玩家請使用畫面下方按鈕</small>
+            </p>
+            <button class="game-btn btn-play" id="btnStartRhythm">▶️ 開始演奏</button>
+          </div>
+        </div>
+
+        <!-- 結束遮罩 -->
+        <div class="game-overlay hidden" id="rhythmOverOverlay">
+          <div class="overlay-modal">
+            <span class="overlay-emoji" id="rhythmOverEmoji">🎉</span>
+            <h3 id="rhythmOverTitle">演奏結束！</h3>
+            <p id="rhythmOverSummary">獲得 <span class="highlight-score" id="rhythmOverScore">0</span> 分！</p>
+            <div class="medal-badge" id="rhythmOverMedal">🥁 鼓手新手</div>
+            <button class="game-btn btn-play" id="btnRestartRhythm">🔄 再演奏一次</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 手機虛擬按鈕 -->
+      <div class="rhythm-touch-controls">
+        <button class="rhythm-touch-btn red-drum" id="btnRhythmD">
+          <span class="drum-icon">🔴</span>
+          <span>紅鼓 (D)</span>
+        </button>
+        <button class="rhythm-touch-btn blue-drum" id="btnRhythmF">
+          <span class="drum-icon">🔵</span>
+          <span>藍鼓 (F)</span>
+        </button>
+      </div>
+
+      <!-- 底部提示 -->
+      <div class="game-footer-tips">
+        <span>💡 跟著移動的鼓符，在到達判定線時按下對應按鍵！準確率越高分數越高 🎶</span>
+      </div>
+    </section>
   </main>
 
   <!-- 底部小動物漫步樂園與地景草坡 -->
@@ -250,6 +372,11 @@
     <button class="dock-btn btn-game" id="btnGame" title="前往下方玩萌寵接甜點小遊戲">
       <span class="btn-icon">🎮</span>
       <span class="btn-label">玩小遊戲</span>
+      <span class="game-badge-new">NEW</span>
+    </button>
+    <button class="dock-btn btn-rhythm" id="btnRhythm" title="前往下方玩太鼓音遊">
+      <span class="btn-icon">🥁</span>
+      <span class="btn-label">太鼓音遊</span>
       <span class="game-badge-new">NEW</span>
     </button>
     <button class="dock-btn btn-theme" id="btnTheme" title="切換白天、黃昏或星夜">
